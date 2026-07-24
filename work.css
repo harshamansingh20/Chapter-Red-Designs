@@ -32,6 +32,16 @@
 .pk-p { color: #101214; font-size: 16px; line-height: 22.4px; font-weight: 400; }
 .pk-sub { font-size: 16px; line-height: 19.2px; font-weight: 800; }
 
+/* Real photos (natural aspect ratio) */
+.pk-photo { width: 100%; height: auto; display: block; border-radius: 16px; }
+.pk-photo--edge, .pk-photo--craft { width: 100%; }
+.pk-row > .pk-photo { width: 100%; }
+@media (min-width: 768px) {
+  .pk-photo--edge { width: 46%; flex-shrink: 0; }
+  .pk-photo--craft { flex: 1; }
+  .pk-row > .pk-photo { flex: 1 1 0; width: 0; min-width: 0; }
+}
+
 /* Placeholder images */
 .pk-img {
   background: #E5E5E5;
