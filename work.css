@@ -1,0 +1,137 @@
+/* ==========================================================================
+   Punjabi Kadhai case study — translated from app/work/punjabi-kadhai/page.tsx
+   Breakpoints: sm = 640px, md = 768px
+   ========================================================================== */
+.pk { background: #f0f0f0; width: 100%; display: flex; flex-direction: column; font-family: 'Aspekta', sans-serif; }
+.pk-wrap { max-width: 1512px; margin: 0 auto; width: 100%; padding: 0 20px; }
+@media (min-width: 768px) { .pk-wrap { padding: 0 106px; } }
+
+/* Back to Projects */
+.pk-back { display: flex; align-items: center; gap: 12px; width: fit-content; margin-top: 48px; }
+.pk-back-icon { width: 38px; height: 36px; background: #d9d9d9; display: flex; align-items: center; justify-content: center; flex-shrink: 0; }
+.pk-back-text { color: #101214; font-size: 16px; line-height: 22.4px; font-weight: 550; }
+@media (min-width: 768px) { .pk-back { margin-top: 172px; } }
+
+/* Titles */
+.pk-title { color: #000; font-weight: 800; }
+.pk-title--h1 { font-size: 36px; line-height: 44px; }
+.pk-title--h2 { font-size: 36px; line-height: 40px; }
+.pk-title--h3 { font-size: 28px; line-height: 34px; }
+@media (min-width: 768px) {
+  .pk-title--h1 { font-size: 64px; line-height: 76.8px; }
+  .pk-title--h2 { font-size: 64px; line-height: 64px; }
+  .pk-title--h3 { font-size: 45px; line-height: 54px; }
+}
+.pk-title--h1.pk-project { margin-top: 32px; }
+@media (min-width: 768px) { .pk-title--h1.pk-project { margin-top: 100px; } }
+
+.pk-dark { color: #101214; }
+.pk-red { color: #e41e2f; }
+
+/* Body text */
+.pk-p { color: #101214; font-size: 16px; line-height: 22.4px; font-weight: 400; }
+.pk-sub { font-size: 16px; line-height: 19.2px; font-weight: 800; }
+
+/* Placeholder images */
+.pk-img {
+  background: #E5E5E5;
+  display: flex; align-items: center; justify-content: center;
+  flex-shrink: 0;
+  border-radius: 16px;
+  border: 1px dashed rgba(0, 0, 0, 0.15);
+}
+.pk-img span {
+  font-size: 10px; font-weight: 600; letter-spacing: 0.14em;
+  text-transform: uppercase; color: #A1A1A1; text-align: center; padding: 0 8px;
+}
+.pk-img--full { width: 100%; height: 220px; }
+.pk-img--detail { flex: 1; height: 180px; }
+.pk-img--half { flex: 1; height: 220px; }
+.pk-img--edge { width: 100%; height: 220px; }
+.pk-img--craft { width: 100%; height: 220px; }
+@media (min-width: 640px) {
+  .pk-img--full, .pk-img--half, .pk-img--edge, .pk-img--craft { height: 380px; }
+  .pk-img--detail { height: 280px; }
+}
+@media (min-width: 768px) {
+  .pk-img--full { height: 780px; }
+  .pk-img--half { height: 780px; }
+  .pk-img--detail { height: 500px; }
+  .pk-img--edge { width: 46%; height: 780px; flex-shrink: 0; }
+  .pk-img--craft { flex: 1; height: 780px; }
+}
+
+/* Top-margin helpers  (mobile / desktop) */
+.pk-mt-hero { margin-top: 24px; }
+.pk-mt-90 { margin-top: 32px; }
+.pk-mt-105 { margin-top: 24px; }
+.pk-mt-106 { margin-top: 32px; }
+.pk-mt-100 { margin-top: 32px; }
+.pk-mt-100b { margin-top: 24px; }
+.pk-mt-101 { margin-top: 32px; }
+.pk-mt-103 { margin-top: 24px; }
+@media (min-width: 768px) {
+  .pk-mt-hero { margin-top: 88px; }
+  .pk-mt-90 { margin-top: 90px; }
+  .pk-mt-105 { margin-top: 105px; }
+  .pk-mt-106 { margin-top: 106px; }
+  .pk-mt-100, .pk-mt-100b { margin-top: 100px; }
+  .pk-mt-101 { margin-top: 101px; }
+  .pk-mt-103 { margin-top: 103px; }
+}
+
+/* About the Brand */
+.pk-about { margin-top: 40px; display: flex; flex-direction: column; gap: 32px; }
+.pk-about-meta .pk-dl { display: flex; flex-direction: column; gap: 20px; }
+.pk-dt { color: #e41e2f; font-size: 16px; line-height: 22.4px; font-weight: 800; }
+.pk-dd { color: #101214; font-size: 20px; line-height: 28px; font-weight: 550; margin: 0; }
+.pk-dd--credits { font-weight: 400; }
+@media (min-width: 768px) {
+  .pk-about {
+    margin-top: 88px;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    grid-template-rows: auto 1fr;
+    row-gap: 0;
+    column-gap: 100px;
+  }
+  .pk-about-title { grid-row: 1 / 2; grid-column: 1 / 2; align-self: start; }
+  .pk-about-body { grid-row: 1 / 3; grid-column: 2 / 3; display: flex; align-items: center; padding: 10px 0; }
+  .pk-about-meta { grid-row: 2 / 3; grid-column: 1 / 2; align-self: end; padding-bottom: 10px; }
+}
+.pk-about-body { display: flex; align-items: flex-start; padding: 10px 0; }
+
+/* Finding Brand's Edge */
+.pk-edge { margin-top: 40px; display: flex; flex-direction: column; gap: 32px; }
+.pk-edge-body { display: flex; flex-direction: column; gap: 43px; }
+.pk-edge-block { display: flex; flex-direction: column; gap: 5px; }
+.pk-edge-block--tight { gap: 4px; }
+@media (min-width: 768px) {
+  .pk-edge { margin-top: 99px; flex-direction: row; align-items: flex-start; gap: 96px; }
+}
+
+/* Humanising the Brand */
+.pk-humanise { margin-top: 40px; display: flex; flex-direction: column; gap: 32px; }
+@media (min-width: 768px) {
+  .pk-humanise { margin-top: 100px; flex-direction: row; align-items: flex-start; gap: 98px; }
+  .pk-humanise-title { flex-shrink: 0; }
+  .pk-humanise-body { align-self: center; }
+}
+
+/* Crafting the Identity */
+.pk-craft { margin-top: 40px; display: flex; flex-direction: column; gap: 32px; }
+.pk-craft-body { display: flex; flex-direction: column; width: 100%; gap: 37px; }
+@media (min-width: 768px) {
+  .pk-craft { margin-top: 90px; flex-direction: row; align-items: flex-start; gap: 100px; }
+  .pk-craft-body { width: 45%; flex-shrink: 0; }
+}
+
+/* Gallery */
+.pk-gallery { padding-bottom: 64px; }
+.pk-row { display: flex; flex-direction: column; gap: 16px; }
+@media (min-width: 768px) {
+  .pk-gallery { padding-bottom: 120px; }
+  .pk-row { flex-direction: row; }
+  .pk-row--3 { gap: 50px; }
+  .pk-row--2 { gap: 100px; }
+}
