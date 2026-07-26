@@ -8,57 +8,131 @@
   <link rel="icon" href="../vector.png" />
   <link rel="stylesheet" href="../styles.css" />
 </head>
-<body style="background:#F0F0F0;min-height:100vh;color:#121212">
-
-  <!-- ── Nav ── -->
-  <nav style="position:fixed;top:0;left:0;right:0;z-index:50;display:flex;align-items:center;justify-content:space-between;padding:0 clamp(24px,5vw,60px);height:64px;border-bottom:1px solid rgba(0,0,0,0.07);background:rgba(240,240,240,0.92);backdrop-filter:blur(12px)">
-    <a href="../index.html" style="text-decoration:none"><span style="font-family:'Aspekta',sans-serif;font-weight:800;font-size:17px;letter-spacing:-0.5px;color:#121212">Chapter<span style="color:#E42222">Red</span></span></a>
-    <a href="../index.html" style="text-decoration:none;color:#4F4F4F;font-size:12px;font-weight:500;letter-spacing:.14em;text-transform:uppercase">← Back to site</a>
-  </nav>
-
-  <div style="padding-top:64px">
-    <!-- ── Header ── -->
-    <div style="max-width:1280px;margin:0 auto;padding:clamp(48px,8vw,96px) clamp(24px,5vw,60px) 0">
-      <div class="load-up">
-        <span style="display:inline-flex;align-items:center;gap:8px;border:1px solid rgba(228,34,34,0.3);border-radius:100px;padding:5px 14px;margin-bottom:28px;font-size:10px;font-weight:600;letter-spacing:.2em;text-transform:uppercase;color:#E42222">/ WORK / 1 PROJECT</span>
+<body>
+  <div class="site-root instant" id="site-root">
+    <div class="page-bg">
+      <div class="page-grid">
+        <span style="left:20%"></span>
+        <span style="left:38%"></span>
+        <span style="left:50%"></span>
+        <span style="left:62%"></span>
+        <span style="left:80%"></span>
       </div>
-      <h1 class="load-up" style="animation-delay:0.1s;font-family:'Aspekta',sans-serif;font-size:clamp(52px,8vw,120px);font-weight:800;line-height:0.95;letter-spacing:-0.04em;color:#121212;margin:0 0 64px">Selected<br /><span style="color:#E42222">work.</span></h1>
-    </div>
+      <div class="page-z">
 
-    <!-- ── Featured project ── -->
-    <div style="max-width:1280px;margin:0 auto;padding:0 clamp(24px,5vw,60px)">
-      <div class="load-up" style="animation-delay:0.25s">
-        <a href="punjabi-kadhai/index.html" style="text-decoration:none">
-          <div style="position:relative;border-radius:20px;overflow:hidden;height:clamp(360px,48vw,560px);background:white;border:1px solid rgba(0,0,0,0.08);display:flex;align-items:flex-end;cursor:pointer;box-shadow:0 4px 32px rgba(0,0,0,0.06)">
-            <!-- Abstract visual -->
-            <div style="position:absolute;inset:0;overflow:hidden">
-              <div style="position:absolute;top:2%;left:2%;font-family:'Aspekta',sans-serif;font-size:clamp(180px,26vw,400px);font-weight:900;line-height:1;color:rgba(18,18,18,0.045);letter-spacing:-0.06em;user-select:none;white-space:nowrap">PK</div>
-              <div style="position:absolute;top:24%;left:18%;width:260px;height:260px;border-radius:50%;background:radial-gradient(circle,rgba(228,34,34,0.10) 0%,transparent 70%)"></div>
-              <div style="position:absolute;inset:0;background-image:linear-gradient(rgba(0,0,0,0.025) 1px,transparent 1px),linear-gradient(90deg,rgba(0,0,0,0.025) 1px,transparent 1px);background-size:80px 80px"></div>
-            </div>
-            <!-- Content -->
-            <div style="position:relative;z-index:2;padding:clamp(24px,4vw,48px);width:100%;background:linear-gradient(to top,white 60%,transparent 100%)">
-              <div style="display:flex;align-items:center;gap:12px;margin-bottom:16px">
-                <span style="border:1px solid rgba(228,34,34,0.3);border-radius:100px;padding:4px 12px;font-size:10px;font-weight:600;letter-spacing:.16em;text-transform:uppercase;color:#E42222">Food &amp; Hospitality</span>
-                <span style="font-size:11px;color:#A1A1A1;letter-spacing:.1em">Brand Strategy · Brand Visuals</span>
+        <!-- ── Navbar ── -->
+        <header class="navbar scrolled" id="navbar">
+          <div class="navbar-inner">
+            <a href="../index.html" class="navbar-logo"><img src="../brand/logo.png" alt="Chapter Red" /></a>
+            <nav class="navbar-nav">
+              <a class="navbar-link" href="../index.html">HOME</a>
+              <a class="navbar-link" href="../index.html#services">SERVICES</a>
+              <a class="navbar-link" style="color:var(--red)" href="index.html">WORK</a>
+              <a class="navbar-link" href="../index.html#about">ABOUT</a>
+              <a class="navbar-link" href="../blog/index.html">INSIGHTS</a>
+            </nav>
+            <a href="#" class="btn-call">
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72c.127.96.361 1.903.7 2.81a2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45c.907.339 1.85.573 2.81.7A2 2 0 0 1 22 16.92z"/></svg>
+              BOOK A CALL
+            </a>
+          </div>
+        </header>
+
+        <div style="padding-top:64px">
+
+          <!-- ── Page header ── -->
+          <div class="work-page-header">
+            <h1>OUR <span style="color:var(--red)">WORK</span></h1>
+          </div>
+
+          <!-- ── Projects grid ── -->
+          <div class="wgrid">
+
+            <!-- Card 1: Punjabi Kadhai -->
+            <a href="punjabi-kadhai/index.html" class="wgrid-card">
+              <div class="wgrid-card-bg">
+                <div style="position:absolute;top:4%;left:2%;font-family:'Aspekta',sans-serif;font-size:clamp(90px,14vw,200px);font-weight:900;line-height:1;color:rgba(18,18,18,0.055);letter-spacing:-0.06em;user-select:none;white-space:nowrap">PK</div>
+                <div style="position:absolute;top:20%;left:15%;width:160px;height:160px;border-radius:50%;background:radial-gradient(circle,rgba(228,34,34,0.12) 0%,transparent 70%)"></div>
               </div>
-              <h2 style="font-family:'Aspekta',sans-serif;font-size:clamp(28px,4vw,54px);font-weight:800;line-height:1.05;letter-spacing:-0.03em;color:#121212;margin:0 0 16px;max-width:640px">Punjabi Kadhai</h2>
-              <p style="font-size:16px;color:#4F4F4F;line-height:1.65;max-width:520px;margin:0">An authentic Punjabi restaurant brand for Siliguri — a strategy-first identity that honours Punjab beyond the clichés, built on warmth, hospitality and Phulkari-inspired craft.</p>
-              <div style="margin-top:24px;display:inline-flex;align-items:center;gap:8px;font-size:11px;font-weight:700;letter-spacing:.16em;text-transform:uppercase;color:#E42222">View project →</div>
+              <div class="wgrid-card-info">
+                <span class="wgrid-card-cat">Food &amp; Hospitality</span>
+                <p class="wgrid-card-name">Punjabi Kadhai</p>
+              </div>
+            </a>
+
+            <!-- Cards 2–6: Placeholder -->
+            <div class="wgrid-card wgrid-card--empty"></div>
+            <div class="wgrid-card wgrid-card--empty"></div>
+            <div class="wgrid-card wgrid-card--empty"></div>
+            <div class="wgrid-card wgrid-card--empty"></div>
+            <div class="wgrid-card wgrid-card--empty"></div>
+
+          </div>
+        </div>
+
+        <!-- ── Footer ── -->
+        <footer class="footer">
+          <div class="footer-top">
+            <div class="footer-news">
+              <p class="footer-col-label">Newsletter</p>
+              <h3 class="footer-news-heading">Stay in the loop.</h3>
+              <p class="footer-news-desc">Branding insights, tips, and updates delivered straight to your inbox.</p>
+              <div class="news-form">
+                <input type="email" placeholder="your@email.com" />
+                <button>Send
+                  <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="22" y1="2" x2="11" y2="13"/><polygon points="22 2 15 22 11 13 2 9 22 2"/></svg>
+                </button>
+              </div>
+            </div>
+            <div class="footer-col">
+              <p class="footer-col-label">Navigation</p>
+              <ul class="footer-links">
+                <li><a href="../index.html">Home</a></li>
+                <li><a href="../index.html#services">Services</a></li>
+                <li><a href="index.html">Work</a></li>
+                <li><a href="../index.html#about">About</a></li>
+                <li><a href="../blog/index.html">Insights</a></li>
+              </ul>
+            </div>
+            <div class="footer-col">
+              <p class="footer-col-label">Contact</p>
+              <div class="footer-contact-list">
+                <div class="footer-contact-item">
+                  <span class="footer-contact-icon">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" width="16" height="16"><rect x="2" y="4" width="20" height="16" rx="2"/><path d="m22 7-8.97 5.7a1.94 1.94 0 0 1-2.06 0L2 7"/></svg>
+                  </span>
+                  <span>jasgul@chapterred.com</span>
+                </div>
+              </div>
+              <div class="footer-divider"></div>
+              <p class="footer-col-label">Follow Us</p>
+              <div class="footer-socials">
+                <a href="https://www.behance.net/chapterreddesigns" target="_blank" rel="noopener" aria-label="Behance">
+                  <svg viewBox="0 0 24 24" fill="currentColor" width="16" height="16"><path d="M22 7h-7V5h7v2zm1.726 10c-.442 1.297-2.029 3-5.101 3-3.074 0-5.564-1.729-5.564-5.675 0-3.91 2.325-5.92 5.466-5.92 3.082 0 4.964 1.782 5.375 4.426.078.506.109 1.188.095 2.14H15.97c.13 1.2.836 1.98 2.057 1.98.815 0 1.43-.40 1.71-1.01L23.726 17zm-7.735-4.08h3.938c-.118-1.48-.847-2.003-1.913-2.003-1.094 0-1.8.557-2.025 2.003zM9.519 11.83c.769-.487 1.28-1.348 1.28-2.395 0-2.554-1.924-3.435-4.255-3.435H1v13h5.739c2.427 0 4.755-1.012 4.755-3.757 0-1.391-.706-2.56-1.975-3.413zM3.608 8h2.376c.82 0 1.542.315 1.542 1.298 0 .89-.57 1.37-1.542 1.37H3.608V8zm2.84 7h-2.84v-3.039h2.84c1.044 0 1.776.523 1.776 1.548 0 1.062-.742 1.491-1.776 1.491z"/></svg>
+                </a>
+                <a href="https://www.instagram.com/chapterreddesigns/" target="_blank" rel="noopener" aria-label="Instagram">
+                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" width="16" height="16"><rect x="2" y="2" width="20" height="20" rx="5" ry="5"/><path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"/><line x1="17.5" y1="6.5" x2="17.51" y2="6.5"/></svg>
+                </a>
+                <a href="https://www.linkedin.com/company/chapterred/" target="_blank" rel="noopener" aria-label="LinkedIn">
+                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" width="16" height="16"><path d="M16 8a6 6 0 0 1 6 6v7h-4v-7a2 2 0 0 0-2-2 2 2 0 0 0-2 2v7h-4v-7a6 6 0 0 1 6-6z"/><rect x="2" y="9" width="4" height="12"/><circle cx="4" cy="4" r="2"/></svg>
+                </a>
+              </div>
             </div>
           </div>
-        </a>
-      </div>
-    </div>
+          <div class="footer-logo-section">
+            <img src="../brand/logo-footer.svg" alt="Chapter Red" class="footer-logo-img" />
+          </div>
+          <div class="footer-bottom">
+            <div class="inner">
+              <p>© 2026 <strong>CHAPTER RED.</strong></p>
+            </div>
+          </div>
+        </footer>
 
-    <!-- ── Project grid (additional projects) ──
-         To add a project: copy one card block below, update the link, visual
-         initials, category, title and excerpt. Cards flow into this grid. -->
-    <div style="max-width:1280px;margin:0 auto;padding:24px clamp(24px,5vw,60px) 96px;display:grid;grid-template-columns:repeat(auto-fit,minmax(300px,1fr));gap:20px">
-      <!-- No additional projects yet. -->
+      </div>
     </div>
   </div>
 
-  <script src="../blog.js"></script>
+  <script src="../main.js"></script>
 </body>
 </html>

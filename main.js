@@ -166,22 +166,48 @@
     function measure() {
       const vh = window.innerHeight;
       const rect = container.getBoundingClientRect();
-      // offset ["start end", "start 25%"] : 0 when top at vh, 1 when top at 25% vh
       const travel = vh - 0.25 * vh;
       target = clamp((vh - rect.top) / travel, 0, 1);
     }
     function render() {
-      current += (target - current) * 0.12; // spring-ish
-      const scale = lerp(0.35, 1, current);
-      const radius = lerp(20, 16, current);
+      current += (target - current) * 0.12;
+      const scale = lerp(0.35, 0.88, current);
       frame.style.transform = "scale(" + scale + ")";
-      frame.style.borderRadius = radius + "px";
       requestAnimationFrame(render);
     }
     window.addEventListener("scroll", measure, { passive: true });
     window.addEventListener("resize", measure);
     measure();
     render();
+
+    // Controls
+    const video = document.getElementById("showreel-video");
+    const playBtn = document.getElementById("sr-play");
+    const muteBtn = document.getElementById("sr-mute");
+    if (!video || !playBtn || !muteBtn) return;
+
+    function syncPlay() {
+      playBtn.querySelector(".sr-icon--play").style.display  = video.paused ? "block" : "none";
+      playBtn.querySelector(".sr-icon--pause").style.display = video.paused ? "none"  : "block";
+    }
+    function syncMute() {
+      muteBtn.querySelector(".sr-icon--sound").style.display = video.muted ? "none"  : "block";
+      muteBtn.querySelector(".sr-icon--muted").style.display = video.muted ? "block" : "none";
+    }
+
+    playBtn.addEventListener("click", function() {
+      video.paused ? video.play() : video.pause();
+      syncPlay();
+    });
+    muteBtn.addEventListener("click", function() {
+      video.muted = !video.muted;
+      syncMute();
+    });
+
+    video.addEventListener("play",  syncPlay);
+    video.addEventListener("pause", syncPlay);
+    syncPlay();
+    syncMute();
   }
 
   /* ── Why (scroll-highlight text) ──────────────────────────────────────── */
@@ -203,10 +229,8 @@
     function update() {
       const vh = window.innerHeight;
       const rect = container.getBoundingClientRect();
-      const height = rect.height;
-      // offset ["start 0.9","end 0.3"]
-      const total = 0.6 * vh + height;
-      const prog = clamp((0.9 * vh - rect.top) / total, 0, 1);
+      // prog: 0 when sticky locks in (rect.top=0), 1 when track bottom hits viewport bottom
+      const prog = clamp(-rect.top / (container.offsetHeight - vh), 0, 1);
       const n = spans.length;
       spans.forEach((s, i) => {
         const start = i / n, end = (i + 1) / n;
@@ -230,18 +254,6 @@
     { category: "05 — Studio", name: "Reverie", variant: 5 },
     { category: "06 — Tech", name: "Northpoint", variant: 6 },
   ];
-  const CARD_BG = {
-    1: "linear-gradient(160deg, #cdc9c0 0%, #a89f93 100%)",
-    2: "linear-gradient(160deg, #d4cfc6 0%, #b2a89d 100%)",
-    3: "linear-gradient(160deg, #c4c8cc 0%, #8a8e91 100%)",
-    4: "radial-gradient(circle at 30% 30%, rgba(255,255,255,.18) 0%, transparent 50%), linear-gradient(160deg, #E42222 0%, #B91020 100%)",
-    5: "linear-gradient(160deg, #c8cdc2 0%, #8e9389 100%)",
-    6: "radial-gradient(circle at 70% 30%, rgba(225,29,42,.25) 0%, transparent 60%), linear-gradient(160deg, #1a1918 0%, #0a0908 100%)",
-  };
-  const CARD_TEXT_COLOR = {
-    1: "rgba(17,17,16,.78)", 2: "rgba(17,17,16,.78)", 3: "rgba(17,17,16,.78)",
-    4: "rgba(240,237,232,.92)", 5: "rgba(17,17,16,.78)", 6: "rgba(240,237,232,.92)",
-  };
   const STACK = [
     { x: -2, y: 0, r: -8 }, { x: -1, y: -1, r: -4 }, { x: 0, y: 0, r: -1 },
     { x: 1, y: -1, r: 2 }, { x: 2, y: 0, r: 5 }, { x: 3, y: 1, r: 9 },
@@ -256,15 +268,8 @@
   ];
   const lerpPos = (a, b, t) => ({ x: lerp(a.x, b.x, t), y: lerp(a.y, b.y, t), r: lerp(a.r, b.r, t) });
 
-  function cardInner(card) {
-    return (
-      '<div class="label">' +
-        '<small style="color:' + CARD_TEXT_COLOR[card.variant] + '">' + card.category + "</small>" +
-        '<strong style="color:' + CARD_TEXT_COLOR[card.variant] + '">' + card.name + "</strong>" +
-      "</div>" +
-      '<div class="frame"></div>' +
-      '<div class="overlay"><span>View Project →</span></div>'
-    );
+  function cardInner() {
+    return '<div class="overlay"><span>VIEW PROJECT →</span></div>';
   }
 
   function initSelectedWork() {
@@ -276,7 +281,7 @@
     desktop.className = "work-desktop";
     desktop.innerHTML =
       '<div class="work-sticky">' +
-        '<div class="work-heading"><h2 class="heading-2"><span class="dark">Featured </span><span class="red">Works.</span></h2></div>' +
+        '<div class="work-heading"><h2 class="heading-2"><span class="dark">FEATURED </span><span class="red">WORKS</span></h2></div>' +
         '<div class="work-stage" id="work-stage"></div>' +
       "</div>";
 
@@ -285,8 +290,7 @@
       const a = document.createElement("a");
       a.href = "#";
       a.className = "work-card";
-      a.style.background = CARD_BG[card.variant];
-      a.innerHTML = cardInner(card);
+      a.innerHTML = cardInner();
       stage.appendChild(a);
       return a;
     });
@@ -295,16 +299,15 @@
     const mobile = document.createElement("section");
     mobile.className = "work-mobile";
     mobile.innerHTML =
-      '<h2><span style="color:#121212">Featured </span><span style="color:#E42222">Works.</span></h2>' +
+      '<h2><span style="color:#121212">FEATURED </span><span style="color:#E42222">WORKS</span></h2>' +
       '<div class="work-mobile-list"></div>';
     const mlist = mobile.querySelector(".work-mobile-list");
     WORK_CARDS.forEach((card, i) => {
       const a = document.createElement("a");
       a.href = "#";
       a.className = "work-mcard reveal";
-      a.style.background = CARD_BG[card.variant];
       a.style.transitionDelay = (i * 0.05) + "s";
-      a.innerHTML = cardInner(card);
+      a.innerHTML = cardInner();
       mlist.appendChild(a);
     });
 
@@ -324,8 +327,6 @@
                   : phase === 2 ? lerpPos(FAN[i], GRID[i], t)
                   : GRID[i];
         card.style.transform = "translate(-50%,-50%) translate(" + pos.x + "vw," + pos.y + "vh) rotate(" + pos.r + "deg)";
-        card.style.width = isGrid ? "clamp(290px,28vw,420px)" : "clamp(200px,19vw,260px)";
-        card.style.height = isGrid ? "clamp(200px,19vw,280px)" : "clamp(200px,19vw,260px)";
         card.style.pointerEvents = isGrid ? "auto" : "none";
       });
     }
@@ -347,7 +348,7 @@
     { num: "01", icon: "search", title: "Knowing the Business", desc: "Every branding project starts with understanding the business behind the brand. We dive deep into your business goals, target audience, industry, competitors and market to build a clear picture before developing your brand strategy." },
     { num: "02", icon: "target", title: "Finding Your Edge", desc: "A strong brand stands for something specific. Through brand positioning and market research, we identify what makes your business different, who it serves best and how it can occupy a space that's difficult to replace." },
     { num: "03", icon: "fileText", title: "Defining Your Brand", desc: "This is where your brand strategy comes together. We define your brand's purpose, brand vision, values, positioning, messaging and brand voice to create a clear foundation for every future marketing and design decision." },
-    { num: "04", icon: "heart", title: "Humanising the Brand", desc: "Our favourite part ✨ because this is where brands stop feeling like businesses and start feeling human. It's the moment your brand begins to feel like a person instead of a project. We shape its brand personality, tone of voice and communication style, creating a brand people don't just recognise, but they connect with." },
+    { num: "04", icon: "heart", title: "Humanising the Brand", desc: "Our favourite part because this is where brands stop feeling like businesses and start feeling human. It's the moment your brand begins to feel like a person instead of a project. We shape its brand personality, tone of voice and communication style, creating a brand people don't just recognise, but they connect with." },
     { num: "05", icon: "penTool", title: "Crafting the Identity", desc: "Once the strategy is in place, we translate it into a complete visual identity. From logo design and typography to colour palettes, photography direction and graphic systems, every element is created to reflect your brand consistently across every touchpoint." },
     { num: "06", icon: "rocket", title: "Bringing It to Life", desc: "A brand does not just live in a digital presentation, it lives in the real world. We apply your visual identity across packaging design, social media, stationery, marketing collateral, print and digital touchpoints to create a complete brand system that's ready to grow with your business." },
   ];
@@ -359,7 +360,6 @@
         '<div class="process-tick"></div>' +
         '<div class="process-row">' +
           '<div class="process-numicon">' +
-            '<span class="process-num">/' + s.num + "</span>" +
             '<div class="process-icon"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">' + ICONS[s.icon] + "</svg></div>" +
           "</div>" +
           "<div><h4>" + s.title + "</h4><p>" + s.desc + "</p></div>" +
@@ -383,9 +383,9 @@
     SERVICES.forEach((svc) => {
       const text =
         '<div class="service-text ' + (svc.dark ? "dark" : "light") + '">' +
-          '<span class="service-tag-pill">' + svc.num + " / " + svc.category + "</span>" +
-          "<h3>" + svc.heading + "</h3>" +
-          "<p>" + svc.desc + "</p>" +
+          "<h3>" + svc.category + "</h3>" +
+          '<p class="service-sub">' + svc.heading + "</p>" +
+          '<p class="service-body">' + svc.desc + "</p>" +
         "</div>";
       const card = document.createElement("div");
       card.className = "service-card";
@@ -407,15 +407,16 @@
   function initReviews() {
     const grid = $("#reviews-grid");
     if (!grid) return;
+    const star = '<svg width="26" height="26" viewBox="0 0 24 24" fill="#E42222"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>';
+    const stars = star.repeat(5);
+    const silhouette = '<svg class="review-avatar" viewBox="0 0 36 36" fill="none" xmlns="http://www.w3.org/2000/svg"><circle cx="18" cy="18" r="18" fill="#E8E8E8"/><circle cx="18" cy="14" r="6" fill="#C0C0C0"/><path d="M6 33c0-6.627 5.373-12 12-12s12 5.373 12 12" fill="#C0C0C0"/></svg>';
     grid.innerHTML = REVIEWS.map((r, i) =>
       '<div class="review-card reveal" style="transition-delay:' + (i * 0.08) + 's">' +
-        '<div class="review-chip"><svg width="11" height="11" viewBox="0 0 24 24" fill="#F24202" stroke="#F24202" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg><span>' + r.rating + " RATING</span></div>" +
-        '<div class="review-quote-mark">"</div>' +
+        '<div class="review-stars">' + stars + "</div>" +
         '<p class="review-text">&ldquo;' + r.quote + "&rdquo;</p>" +
         '<div class="review-foot">' +
-          '<img src="' + r.avatar + '" alt="' + r.name + '" />' +
+          silhouette +
           '<div class="info"><p class="name">' + r.name + '</p><p class="role">' + r.role + "</p></div>" +
-          '<button class="review-x"><svg width="12" height="12" viewBox="0 0 12 12" fill="currentColor"><path d="M6.36 5.28L10.5 1h-1.5L5.63 4.3 2.76 1H0l4.34 6.3L0 11h1.5l3.57-3.57L8 11h2.76L6.36 5.28zM5.53 6.94l-.41-.58L2.02 1.9h1.4l2.63 3.72.41.58 3.43 4.84h-1.4L5.53 6.94z"/></svg></button>' +
         "</div>" +
       "</div>"
     ).join("");

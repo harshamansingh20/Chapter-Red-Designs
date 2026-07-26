@@ -64,7 +64,7 @@
               <div class="hero-cta hero-anim" style="animation-delay:0.22s">
                 <a href="#" class="btn-call-lg">
                   <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72c.127.96.361 1.903.7 2.81a2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45c.907.339 1.85.573 2.81.7A2 2 0 0 1 22 16.92z"/></svg>
-                  Book a Call
+                  BOOK A CALL
                 </a>
               </div>
               <div class="hero-trust hero-anim" style="animation-delay:0.3s">
@@ -111,28 +111,31 @@
         <!-- ── Showreel ── -->
         <div class="showreel" id="showreel">
           <div class="showreel-frame" id="showreel-frame">
-            <video src="https://res.cloudinary.com/kmdkox0k/video/upload/v1784901086/showreel_p95a0k.mp4" autoplay muted loop playsinline></video>
+            <video id="showreel-video" src="https://res.cloudinary.com/kmdkox0k/video/upload/v1784901086/showreel_p95a0k.mp4" autoplay muted loop playsinline></video>
+            <div class="showreel-controls">
+              <button class="sr-btn" id="sr-play" aria-label="Play / Pause">
+                <svg class="sr-icon sr-icon--play" style="display:none" width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><polygon points="5,3 19,12 5,21"/></svg>
+                <svg class="sr-icon sr-icon--pause" width="14" height="14" viewBox="0 0 24 24" fill="currentColor"><rect x="5" y="4" width="4" height="16" rx="1"/><rect x="15" y="4" width="4" height="16" rx="1"/></svg>
+              </button>
+              <button class="sr-btn" id="sr-mute" aria-label="Mute / Unmute">
+                <svg class="sr-icon sr-icon--sound" style="display:none" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="11,5 6,9 2,9 2,15 6,15 11,19"/><path d="M19.07 4.93a10 10 0 0 1 0 14.14"/><path d="M15.54 8.46a5 5 0 0 1 0 7.07"/></svg>
+                <svg class="sr-icon sr-icon--muted" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="11,5 6,9 2,9 2,15 6,15 11,19"/><line x1="23" y1="9" x2="17" y2="15"/><line x1="17" y1="9" x2="23" y2="15"/></svg>
+              </button>
+            </div>
           </div>
         </div>
 
         <!-- ── Why / scroll-highlight text ── -->
-        <section class="why" id="why">
-          <p id="why-text"></p>
-        </section>
+        <div class="why-track" id="why">
+          <div class="why-sticky">
+            <div class="why-inner">
+              <p id="why-text"></p>
+            </div>
+          </div>
+        </div>
 
         <!-- ── Selected work ── -->
         <div id="selected-work"></div>
-
-        <!-- ── Process ── -->
-        <section class="process">
-          <div class="process-grid">
-            <div class="process-left">
-              <h2 class="heading-2"><span class="dark">From Business to </span><span class="red">Brand.</span></h2>
-              <p>Every memorable brand is built through a series of deliberate decisions. Our branding process helps uncover what makes your business different before translating it into a complete brand identity system.</p>
-            </div>
-            <div class="process-steps" id="process-steps"></div>
-          </div>
-        </section>
 
         <!-- ── Services ── -->
         <section class="services" id="services">
@@ -140,9 +143,8 @@
             <div class="services-header">
               <div class="services-header-inner">
                 <div>
-                  <h2 class="heading-2"><span class="dark">What We </span><span class="red">Do.</span></h2>
+                  <h2 class="heading-2"><span class="dark">WHAT WE </span><span class="red">DO</span></h2>
                 </div>
-                <p>We combine strategy, speed, and skill to deliver exceptional design — every time.</p>
               </div>
             </div>
             <!-- service cards injected here -->
@@ -150,11 +152,21 @@
           <div style="height:96px"></div>
         </section>
 
+        <!-- ── Process ── -->
+        <section class="process">
+          <div class="process-grid">
+            <div class="process-left">
+              <h2 class="heading-2"><span class="dark">FROM BUSINESS TO </span><span class="red">BRAND</span></h2>
+              <p>Every memorable brand is built through a series of deliberate decisions. Our branding process helps uncover what makes your business different before translating it into a complete brand identity system.</p>
+            </div>
+            <div class="process-steps" id="process-steps"></div>
+          </div>
+        </section>
+
         <!-- ── Reviews ── -->
         <section class="reviews">
           <div class="section-head">
-            <div><h2 class="heading-2"><span class="dark">Success </span><span class="red">Stories.</span></h2></div>
-            <p>Discover how our design subscription helps innovative brands grow smarter and faster.</p>
+            <div><h2 class="heading-2"><span class="dark">SUCCESS </span><span class="red">STORIES</span></h2></div>
           </div>
           <div class="reviews-grid" id="reviews-grid"></div>
         </section>
@@ -162,8 +174,7 @@
         <!-- ── Team ── -->
         <section class="team" id="about">
           <div class="section-head">
-            <div><h2 class="heading-2"><span class="dark">Our Expert </span><span class="red">Team.</span></h2></div>
-            <p>A team of passionate professionals delivering expert, creative work — every time.</p>
+            <div><h2 class="heading-2"><span class="dark">WHAT WE </span><span class="red">THINK</span></h2></div>
           </div>
           <div class="team-grid" id="team-grid"></div>
         </section>
@@ -172,7 +183,7 @@
         <section class="faq" id="faq">
           <div class="faq-grid">
             <div class="faq-left">
-              <h2 class="heading-2"><span class="dark">Frequently Asked </span><span class="red">Questions.</span></h2>
+              <h2 class="heading-2"><span class="dark">FREQUENTLY ASKED </span><span class="red">QUESTIONS</span></h2>
               <p>Still wondering if we&apos;re the right fit? Let&apos;s have a conversation.</p>
               <a href="#" class="btn-call-sm">
                 <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72c.127.96.361 1.903.7 2.81a2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45c.907.339 1.85.573 2.81.7A2 2 0 0 1 22 16.92z"/></svg>
@@ -191,10 +202,10 @@
             <div class="contact-cols">
               <div class="contact-left">
                 <h2>Let&apos;s create your brand&apos;s next big move.</h2>
-                <p>Tell us a bit about your business and what you&apos;re looking for — we&apos;ll get back to you within a couple of business days.</p>
+                <p>Tell us a bit about your business and what you&apos;re looking for and we&apos;ll get back to you within 24 hours.</p>
                 <div class="contact-info">
-                  <a href="mailto:hello@chapterred.co" class="primary">hello@chapterred.co</a>
-                  <a href="tel:+15551234567" class="secondary">+1 (555) 123-4567</a>
+                  <a href="mailto:jasgul@chapterred.com" class="primary">jasgul@chapterred.com</a>
+                  <span class="secondary">— Jasgul</span>
                 </div>
               </div>
               <div class="contact-card">
@@ -221,7 +232,7 @@
                   </div>
                   <button type="submit" class="submit-btn">
                     <span class="fill"></span>
-                    <span class="label">Get in Touch</span>
+                    <span class="label">Submit</span>
                   </button>
                 </form>
               </div>
@@ -231,59 +242,59 @@
 
         <!-- ── Footer ── -->
         <footer class="footer">
-          <div class="footer-wrap">
-            <div class="footer-top">
-              <div class="footer-news">
-                <h4>Newsletter</h4>
-                <p>Stay in the loop with branding insights, tips, and updates.</p>
-                <div class="news-form">
-                  <input type="email" placeholder="your@email.com" />
-                  <button>Send
-                    <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="22" y1="2" x2="11" y2="13"/><polygon points="22 2 15 22 11 13 2 9 22 2"/></svg>
-                  </button>
+          <div class="footer-top">
+            <div class="footer-news">
+              <p class="footer-col-label">Newsletter</p>
+              <h3 class="footer-news-heading">Stay in the loop.</h3>
+              <p class="footer-news-desc">Branding insights, tips, and updates delivered straight to your inbox.</p>
+              <div class="news-form">
+                <input type="email" placeholder="your@email.com" />
+                <button>Send
+                  <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="22" y1="2" x2="11" y2="13"/><polygon points="22 2 15 22 11 13 2 9 22 2"/></svg>
+                </button>
+              </div>
+            </div>
+            <div class="footer-col">
+              <p class="footer-col-label">Navigation</p>
+              <ul class="footer-links">
+                <li><a href="index.html">Home</a></li>
+                <li><a href="#services">Services</a></li>
+                <li><a href="work/index.html">Work</a></li>
+                <li><a href="#about">About</a></li>
+                <li><a href="blog/index.html">Insights</a></li>
+              </ul>
+            </div>
+            <div class="footer-col">
+              <p class="footer-col-label">Contact</p>
+              <div class="footer-contact-list">
+                <div class="footer-contact-item">
+                  <span class="footer-contact-icon">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" width="16" height="16"><rect x="2" y="4" width="20" height="16" rx="2"/><path d="m22 7-8.97 5.7a1.94 1.94 0 0 1-2.06 0L2 7"/></svg>
+                  </span>
+                  <span>jasgul@chapterred.com</span>
                 </div>
-                <p class="footer-follow-label">/Follow Us</p>
-                <div class="footer-socials">
-                  <a href="#" aria-label="Instagram"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" width="15" height="15"><rect x="2" y="2" width="20" height="20" rx="5" ry="5"/><path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"/><line x1="17.5" y1="6.5" x2="17.51" y2="6.5"/></svg></a>
-                  <a href="#" aria-label="YouTube"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" width="15" height="15"><path d="M22.54 6.42a2.78 2.78 0 0 0-1.95-1.96C18.88 4 12 4 12 4s-6.88 0-8.59.46a2.78 2.78 0 0 0-1.95 1.96A29 29 0 0 0 1 12a29 29 0 0 0 .46 5.58A2.78 2.78 0 0 0 3.41 19.6C5.12 20 12 20 12 20s6.88 0 8.59-.46a2.78 2.78 0 0 0 1.95-1.95A29 29 0 0 0 23 12a29 29 0 0 0-.46-5.58z"/><polygon points="9.75 15.02 15.5 12 9.75 8.98 9.75 15.02" fill="currentColor" stroke="none"/></svg></a>
-                  <a href="#" aria-label="LinkedIn"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" width="15" height="15"><path d="M16 8a6 6 0 0 1 6 6v7h-4v-7a2 2 0 0 0-2-2 2 2 0 0 0-2 2v7h-4v-7a6 6 0 0 1 6-6z"/><rect x="2" y="9" width="4" height="12"/><circle cx="4" cy="4" r="2"/></svg></a>
-                  <a href="#" aria-label="Dribbble"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" width="15" height="15"><circle cx="12" cy="12" r="10"/><path d="M8.56 2.75c4.37 6.03 6.02 9.42 8.03 17.72m2.54-15.38c-3.72 4.35-8.94 5.66-16.88 5.85m19.5 1.9c-3.5-.93-6.63-.82-8.94 0-2.58.92-5.01 2.86-7.44 6.32"/></svg></a>
-                  <a href="#" aria-label="X"><svg viewBox="0 0 24 24" fill="currentColor" width="14" height="14"><path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-4.714-6.231-5.401 6.231H2.74l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z"/></svg></a>
-                </div>
               </div>
-              <div>
-                <p class="footer-col-label">/Navigation</p>
-                <ul class="footer-links">
-                  <li><a href="index.html">Home</a></li>
-                  <li><a href="#services">Services</a></li>
-                  <li><a href="work/index.html">Work</a></li>
-                  <li><a href="#about">About</a></li>
-                  <li><a href="blog/index.html">Insights</a></li>
-                </ul>
-              </div>
-              <div>
-                <p class="footer-col-label">/Resources</p>
-                <ul class="footer-links">
-                  <li><a href="#">Privacy Policy</a></li>
-                  <li><a href="#">Terms of Service</a></li>
-                  <li><a href="#">404 Page</a></li>
-                </ul>
-              </div>
-              <div>
-                <p class="footer-col-label">/Contact</p>
-                <ul class="footer-links">
-                  <li><a href="mailto:hello@chapterred.co">hello@chapterred.co</a></li>
-                  <li><a href="tel:+15551234567">+1 (555) 123-4567</a></li>
-                </ul>
+              <div class="footer-divider"></div>
+              <p class="footer-col-label">Follow Us</p>
+              <div class="footer-socials">
+                <a href="https://www.behance.net/chapterreddesigns" target="_blank" rel="noopener" aria-label="Behance">
+                  <svg viewBox="0 0 24 24" fill="currentColor" width="16" height="16"><path d="M22 7h-7V5h7v2zm1.726 10c-.442 1.297-2.029 3-5.101 3-3.074 0-5.564-1.729-5.564-5.675 0-3.91 2.325-5.92 5.466-5.92 3.082 0 4.964 1.782 5.375 4.426.078.506.109 1.188.095 2.14H15.97c.13 1.2.836 1.98 2.057 1.98.815 0 1.43-.40 1.71-1.01L23.726 17zm-7.735-4.08h3.938c-.118-1.48-.847-2.003-1.913-2.003-1.094 0-1.8.557-2.025 2.003zM9.519 11.83c.769-.487 1.28-1.348 1.28-2.395 0-2.554-1.924-3.435-4.255-3.435H1v13h5.739c2.427 0 4.755-1.012 4.755-3.757 0-1.391-.706-2.56-1.975-3.413zM3.608 8h2.376c.82 0 1.542.315 1.542 1.298 0 .89-.57 1.37-1.542 1.37H3.608V8zm2.84 7h-2.84v-3.039h2.84c1.044 0 1.776.523 1.776 1.548 0 1.062-.742 1.491-1.776 1.491z"/></svg>
+                </a>
+                <a href="https://www.instagram.com/chapterreddesigns/" target="_blank" rel="noopener" aria-label="Instagram">
+                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" width="16" height="16"><rect x="2" y="2" width="20" height="20" rx="5" ry="5"/><path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"/><line x1="17.5" y1="6.5" x2="17.51" y2="6.5"/></svg>
+                </a>
+                <a href="https://www.linkedin.com/company/chapterred/" target="_blank" rel="noopener" aria-label="LinkedIn">
+                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" width="16" height="16"><path d="M16 8a6 6 0 0 1 6 6v7h-4v-7a2 2 0 0 0-2-2 2 2 0 0 0-2 2v7h-4v-7a6 6 0 0 1 6-6z"/><rect x="2" y="9" width="4" height="12"/><circle cx="4" cy="4" r="2"/></svg>
+                </a>
               </div>
             </div>
           </div>
-          <div class="footer-logo">
-            <img src="brand/logo.png" alt="Chapter Red" />
+          <div class="footer-logo-section">
+            <img src="brand/logo-footer.svg" alt="Chapter Red" class="footer-logo-img" />
           </div>
           <div class="footer-bottom">
             <div class="inner">
-              <p>©2026 CHAPTER RED.</p>
+              <p>© 2026 <strong>CHAPTER RED.</strong></p>
             </div>
           </div>
         </footer>
