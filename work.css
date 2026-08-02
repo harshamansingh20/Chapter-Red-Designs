@@ -166,7 +166,7 @@
 }
 .pk-cta-heading {
   font-family: 'Aspekta', sans-serif;
-  font-size: clamp(1.75rem, 3vw, 3rem);
+  font-size: clamp(28px, 3vw, 48px);
   font-weight: 800;
   color: #121212;
   text-transform: uppercase;
@@ -182,7 +182,7 @@
   align-items: flex-start;
 }
 .pk-cta-body {
-  font-size: clamp(1.0625rem, 1.5vw, 1.25rem);
+  font-size: clamp(17px, 1.5vw, 20px);
   color: #4F4F4F;
   line-height: 1.6;
   margin: 0 0 2rem;

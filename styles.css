@@ -33,7 +33,7 @@
 * { margin: 0; padding: 0; }
 
 html {
-  font-size: clamp(10px, 0.9259vw, 16px);
+  font-size: 16px;
   background: var(--bg-page);
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
@@ -65,7 +65,7 @@ ul { list-style: none; }
   font-weight: 700;
   line-height: 1.1;
   letter-spacing: -0.125rem;
-  font-size: clamp(2.25rem, 4.5vw, 3.625rem);
+  font-size: clamp(36px, 4.5vw, 58px);
 }
 .heading-2 .dark { color: #121212; }
 .heading-2 .red { color: var(--red); }
@@ -244,7 +244,7 @@ ul { list-style: none; }
   text-transform: uppercase;
   line-height: 0.92;
   margin-bottom: 1.25rem;
-  font-size: clamp(1.875rem, 4.5vw, 4.1875rem);
+  font-size: clamp(30px, 4.5vw, 67px);
   letter-spacing: -0.01em;
 }
 .hero h1 .dark { color: #121212; }
@@ -404,7 +404,7 @@ ul { list-style: none; }
 #why-text {
   font-weight: 700;
   line-height: 1.25;
-  font-size: clamp(1.375rem, 2.6vw, 2.625rem);
+  font-size: clamp(22px, 2.6vw, 42px);
   letter-spacing: -0.019rem;
   text-align: center;
   text-transform: uppercase;
@@ -412,7 +412,7 @@ ul { list-style: none; }
 .why-sticky .word { color: #A1A1A1; opacity: 0.15; transition: color 0.15s linear, opacity 0.15s linear; }
 .why-q-open, .why-q-close {
   font-family: Georgia, 'Times New Roman', serif;
-  font-size: clamp(4rem, 8vw, 7.5rem);
+  font-size: clamp(64px, 8vw, 120px);
   font-weight: 900;
   color: #E42222;
   line-height: 0.75;
@@ -429,7 +429,7 @@ ul { list-style: none; }
 .why-attribution { opacity: 0.15; text-align: right; }
 .why-name {
   font-family: 'Aspekta', sans-serif;
-  font-size: clamp(1.5rem, 2.5vw, 2.125rem);
+  font-size: clamp(24px, 2.5vw, 34px);
   font-weight: 800;
   color: #E42222;
   letter-spacing: 0.04em;
@@ -660,7 +660,7 @@ ul { list-style: none; }
   font-weight: 700;
   line-height: 1.1;
   margin-bottom: 1.25rem;
-  font-size: clamp(1.75rem, 3.2vw, 2.625rem);
+  font-size: clamp(28px, 3.2vw, 42px);
   letter-spacing: -0.02em;
 }
 .contact-left p { font-size: 0.9375rem; color: #4F4F4F; line-height: 1.625; margin-bottom: 2rem; max-width: 22.5rem; }
@@ -745,7 +745,7 @@ textarea.field { resize: none; line-height: 1.625; }
   gap: 2rem;
 }
 .footer-quote-text {
-  font-size: clamp(1rem, 1.8vw, 1.625rem);
+  font-size: clamp(16px, 1.8vw, 26px);
   font-weight: 800;
   letter-spacing: -0.03em;
   line-height: 1.1;
@@ -847,7 +847,7 @@ textarea.field { resize: none; line-height: 1.625; }
 
 .work-mobile { background: #F0F0F0; border-bottom: 1px solid rgba(0,0,0,0.08); padding: 3.5rem 1.5rem 4.5rem; display: none; }
 .work-mobile h2 {
-  font-size: clamp(2.25rem, 4.5vw, 3.625rem); font-weight: 700; line-height: 1.08;
+  font-size: clamp(36px, 4.5vw, 58px); font-weight: 700; line-height: 1.08;
   letter-spacing: -0.125rem; margin: 0 0 2.25rem;
 }
 .work-mobile-list { display: flex; flex-direction: column; gap: 0.75rem; }
@@ -877,7 +877,7 @@ textarea.field { resize: none; line-height: 1.625; }
 
 /* Small mobile: tighten heading */
 @media (max-width: 480px) {
-  .work-mobile h2 { font-size: clamp(1.75rem, 8vw, 2.25rem); letter-spacing: -0.0625rem; }
+  .work-mobile h2 { font-size: clamp(28px, 8vw, 36px); letter-spacing: -0.0625rem; }
 }
 
 /* ==========================================================================
@@ -920,20 +920,20 @@ textarea.field { resize: none; line-height: 1.625; }
 .service-text.light { background: #fff; }
 .service-text.dark { background: #121212; }
 .service-text h3 {
-  font-size: clamp(1.5rem, 2.4vw, 2.25rem);
+  font-size: clamp(24px, 2.4vw, 36px);
   font-weight: 800; letter-spacing: -0.03em; line-height: 1.1;
   margin-bottom: 1rem;
 }
 .service-text.light h3 { color: #121212; }
 .service-text.dark h3 { color: #fff; }
 .service-text .service-sub {
-  font-size: clamp(1rem, 1.4vw, 1.125rem); font-weight: 550; line-height: 1.6;
+  font-size: clamp(16px, 1.4vw, 18px); font-weight: 550; line-height: 1.6;
   margin-bottom: 1.25rem;
 }
 .service-text.light .service-sub { color: #555; }
 .service-text.dark .service-sub { color: rgba(255,255,255,0.6); }
 .service-text .service-body {
-  font-size: clamp(0.875rem, 1.1vw, 0.9375rem);
+  font-size: clamp(14px, 1.1vw, 15px);
   font-weight: 400; line-height: 1.7;
 }
 .service-text.light .service-body { color: #888; }
@@ -1019,7 +1019,7 @@ textarea.field { resize: none; line-height: 1.625; }
 }
 .mobile-nav-link {
   font-family: 'Aspekta', sans-serif;
-  font-size: clamp(2rem, 8vw, 2.5rem);
+  font-size: clamp(32px, 8vw, 40px);
   font-weight: 800;
   color: #121212;
   letter-spacing: -0.02em;
@@ -1045,27 +1045,54 @@ textarea.field { resize: none; line-height: 1.625; }
 /* ── Responsive horizontal padding (mobile / tablet) ──────────────────────── */
 @media (max-width: 767px) {
   .hamburger { display: flex; }
-  /* Hero — spread content to fill full mobile height */
+  /* Hero — compact centered layout, fill viewport so showreel peeks from fold */
+  .hero { min-height: 100svh; }
   .hero-inner {
-    justify-content: space-between;
+    justify-content: center;
+    gap: 1.25rem;
     padding-top: 2rem;
     padding-bottom: 2rem;
   }
   .hero-logo { margin-bottom: 0; }
-  .hero h1 { margin-bottom: 0; }
-  .hero-sub { margin-bottom: 0; }
-  .hero-cta { margin-bottom: 0; justify-content: center; }
+  .hero h1 { margin-bottom: 0; line-height: 1; }
+  .hero-sub { margin-bottom: 0; font-size: 0.875rem; }
+  .hero-cta { margin-bottom: 0; flex-direction: column; align-items: center; gap: 0.75rem; width: 100%; }
+  /* Showreel — no scale animation, flush below hero, card peeks from fold */
+  .showreel { padding: 0; }
+  .showreel-frame { transform: none !important; border-radius: 1.5rem; }
+  /* Why section — disable scroll-lock, show quote normally */
+  .why-track { height: auto; }
+  .why-sticky { position: static; height: auto; padding: 4rem 0; }
+  .why-sticky .word { opacity: 1 !important; color: #121212; }
+  .why-q-open, .why-q-close { opacity: 1 !important; }
+  .why-attribution { opacity: 1 !important; }
+  /* Disable scroll reveal on mobile — show elements immediately */
+  .reveal { opacity: 1 !important; transform: none !important; transition: none !important; }
   .why-inner, .process, .reviews, .team, .faq {
     padding-left: 1.5rem;
     padding-right: 1.5rem;
   }
   .contact-inner { padding-left: 1.5rem; padding-right: 1.5rem; }
-  .services-container { padding-left: 1.5rem; padding-right: 1.5rem; }
-  .services-header-inner { padding-left: 1.5rem; padding-right: 1.5rem; }
-  .footer-quote-wrap { padding-left: 1.5rem; padding-right: 1.5rem; flex-direction: column; align-items: flex-start; }
+  /* Services — mobile: image-top card layout */
+  .services-header { position: static; margin-left: 0; margin-right: 0; width: auto; }
+  .services-header-inner { flex-direction: column; padding-left: 1.5rem; padding-right: 1.5rem; padding-top: 2.5rem; padding-bottom: 1.5rem; }
+  .services-header p { text-align: left; margin-top: 0.75rem; max-width: 100%; }
+  .services-container { height: auto !important; display: flex; flex-direction: column; gap: 1.25rem; padding-left: 1.5rem; padding-right: 1.5rem; padding-bottom: 3rem; }
+  .service-card { position: static !important; flex-direction: column; height: auto !important; border-radius: 1.5rem; }
+  .service-image { order: 1; flex: none; aspect-ratio: 4 / 3; height: auto; }
+  .service-image img { height: 100%; }
+  .service-text { order: 2; flex: none; padding: 1.75rem 1.5rem !important; align-items: center; text-align: center; }
+  .service-text h3 { font-size: 19px; }
+  .service-text .service-sub { font-size: 15px; line-height: 1.5; margin-bottom: 0; }
+  .service-text .service-body { display: none; }
+  /* Reviews — tighter cards on mobile */
+  .review-card { padding: 1.1rem; }
+  .review-stars { margin-bottom: 0.875rem; }
+  .review-text { font-size: 0.8125rem; margin-bottom: 1rem; }
+  .footer-quote-wrap { padding-left: 1.5rem; padding-right: 1.5rem; flex-direction: column; align-items: center; text-align: center; }
   .footer-bottom { padding-left: 1.5rem; padding-right: 1.5rem; }
   .footer-logo-section { padding-left: 1.5rem; padding-right: 1.5rem; }
-  .footer-right-group { align-items: flex-start; }
+  .footer-right-group { align-items: center; }
 }
 @media (min-width: 768px) and (max-width: 1023px) {
   .why-inner, .process, .reviews, .team, .faq {
@@ -1131,7 +1158,7 @@ textarea.field { resize: none; line-height: 1.625; }
 }
 .wgrid-card-name {
   font-family: 'Aspekta', sans-serif;
-  font-size: clamp(1.0625rem, 1.8vw, 1.375rem);
+  font-size: clamp(17px, 1.8vw, 22px);
   font-weight: 700;
   letter-spacing: -0.025em;
   color: #121212;
@@ -1159,7 +1186,7 @@ textarea.field { resize: none; line-height: 1.625; }
 }
 .work-page-header h1 {
   font-family: 'Aspekta', sans-serif;
-  font-size: clamp(1.75rem, 4vw, 3.25rem);
+  font-size: clamp(28px, 4vw, 52px);
   font-weight: 800;
   letter-spacing: -0.03em;
   color: #121212;

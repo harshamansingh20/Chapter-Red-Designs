@@ -155,6 +155,7 @@
     const container = $("#showreel");
     const frame = $("#showreel-frame");
     if (!container || !frame) return;
+    if (window.innerWidth < 768) return;
 
     let current = 0, target = 0;
 
@@ -223,6 +224,15 @@
       p.appendChild(s);
       return s;
     });
+
+    // On mobile: show everything at full opacity, no scroll animation
+    if (window.innerWidth < 768) {
+      spans.forEach((s) => { s.style.opacity = "1"; s.style.color = "#121212"; });
+      if (openQ) openQ.style.opacity = "1";
+      if (closeQ) closeQ.style.opacity = "1";
+      if (attribution) attribution.style.opacity = "1";
+      return;
+    }
 
     const gray = [161, 161, 161], dark = [18, 18, 18];
     function update() {
@@ -387,8 +397,9 @@
   function initServices() {
     const container = $("#services-container");
     if (!container) return;
+    const mobile = window.innerWidth < 768;
     const CARD_H = 380;
-    container.style.height = (CARD_H * SERVICES.length + 400) + "px";
+    if (!mobile) container.style.height = (CARD_H * SERVICES.length + 400) + "px";
     SERVICES.forEach((svc) => {
       const image = '<div class="service-image"><img src="' + svc.img + '" alt="' + svc.category + '" loading="lazy" /></div>';
       const text =
@@ -399,7 +410,7 @@
         "</div>";
       const card = document.createElement("div");
       card.className = "service-card";
-      card.style.height = CARD_H + "px";
+      if (!mobile) card.style.height = CARD_H + "px";
       card.innerHTML = svc.flip ? image + text : text + image;
       container.appendChild(card);
     });
@@ -498,7 +509,7 @@
   /* ── Reveal on scroll ─────────────────────────────────────────────────── */
   function initReveal() {
     const els = document.querySelectorAll(".reveal");
-    if (!("IntersectionObserver" in window)) {
+    if (window.innerWidth < 768 || !("IntersectionObserver" in window)) {
       els.forEach((el) => el.classList.add("is-visible"));
       return;
     }
