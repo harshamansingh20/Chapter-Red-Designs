@@ -821,7 +821,7 @@ textarea.field { resize: none; line-height: 1.625; }
   background: #F0F0F0;
 }
 .work-heading {
-  position: absolute; top: 8.125rem; left: 0; right: 0;
+  position: absolute; top: clamp(5.5rem, 10vh, 8.125rem); left: 0; right: 0;
   max-width: 94.5rem; margin: 0 auto; padding: 0 3.5rem;
   z-index: 5; pointer-events: none;
 }
