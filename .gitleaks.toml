@@ -1,0 +1,9 @@
+title = "Chapter Red Designs — gitleaks config"
+
+[allowlist]
+description = "Public keys safe to commit"
+# reCAPTCHA site keys are intentionally public (embedded in HTML for frontend use).
+# Only the reCAPTCHA *secret* key (server-side only) would be sensitive.
+regexes = [
+  '''6LeJiXAtAAAAABmM5H7StC3I7NQ_BDrQmKzmrGQA''',
+]

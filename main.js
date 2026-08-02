@@ -11,45 +11,40 @@
   const easeInOut = (t) => (t < 0.5 ? 2 * t * t : 1 - Math.pow(-2 * t + 2, 2) / 2);
   const $ = (sel, root = document) => root.querySelector(sel);
 
-  /* ── Intro video ──────────────────────────────────────────────────────── */
+  /* ── Intro animation ─────────────────────────────────────────────────── */
   function initIntro() {
     const SEEN_KEY = "cr-intro-seen";
-    const CROSSFADE_S = 0.9;
-    const FAILSAFE_MS = 9000;
     const overlay = $("#intro-overlay");
     const root = $("#site-root");
-    const video = overlay ? $("video", overlay) : null;
 
     if (!overlay || !root) return;
 
     if (sessionStorage.getItem(SEEN_KEY)) {
       overlay.remove();
       root.classList.add("instant", "reveal-now");
+      initHero();
       return;
     }
 
-    let done = false;
-    function finish() {
-      if (done) return;
-      done = true;
-      clearTimeout(failSafe);
-      sessionStorage.setItem(SEEN_KEY, "1");
+    const logo  = $("#intro-logo",  overlay);
+    const sweep = $("#intro-sweep", overlay);
+
+    sessionStorage.setItem(SEEN_KEY, "1");
+
+    // phase 1 — logo fades + scales in
+    setTimeout(() => logo  && logo.classList.add("show"),  400);
+    // phase 2 — red floods up from bottom
+    setTimeout(() => sweep && sweep.classList.add("flood"), 1800);
+    // phase 3 — overlay slides up; simultaneously trigger hero fade-in
+    setTimeout(() => {
+      overlay.classList.add("exit");
+      initHero();
+    }, 2500);
+    // phase 4 — reveal site, remove overlay
+    setTimeout(() => {
       root.classList.add("reveal-now");
-      overlay.classList.add("hide");
-      setTimeout(() => overlay.remove(), 900);
-    }
-
-    const failSafe = setTimeout(finish, FAILSAFE_MS);
-
-    if (video) {
-      video.addEventListener("timeupdate", () => {
-        if (video.duration && video.currentTime >= video.duration - CROSSFADE_S) finish();
-      });
-      video.addEventListener("ended", finish);
-      video.addEventListener("error", finish);
-    } else {
-      finish();
-    }
+      overlay.remove();
+    }, 3150);
   }
 
   /* ── Navbar scroll state ──────────────────────────────────────────────── */
@@ -166,12 +161,12 @@
     function measure() {
       const vh = window.innerHeight;
       const rect = container.getBoundingClientRect();
-      const travel = vh - 0.25 * vh;
+      const travel = vh;
       target = clamp((vh - rect.top) / travel, 0, 1);
     }
     function render() {
       current += (target - current) * 0.12;
-      const scale = lerp(0.35, 0.88, current);
+      const scale = lerp(0.30, 0.85, current);
       frame.style.transform = "scale(" + scale + ")";
       requestAnimationFrame(render);
     }
@@ -215,6 +210,10 @@
     const container = $("#why");
     const p = $("#why-text");
     if (!container || !p) return;
+    const openQ = $(".why-q-open");
+    const closeQ = $(".why-q-close");
+    const attribution = $(".why-attribution");
+
     const text = "Brands are a lot like people. Looks get you attention, but character is what earns trust. Your brand needs both and that's why it is so important to shape your brand's character before designing its identity.";
     const words = text.split(" ");
     const spans = words.map((w) => {
@@ -239,6 +238,13 @@
         const c = gray.map((g, k) => Math.round(lerp(g, dark[k], wp)));
         s.style.color = "rgb(" + c[0] + "," + c[1] + "," + c[2] + ")";
       });
+      // Open quote: reveal in first 15% of scroll
+      const openP = clamp(prog / 0.15, 0, 1);
+      if (openQ) openQ.style.opacity = (0.15 + 0.85 * openP).toString();
+      // Close quote + attribution: reveal in last 15% of scroll
+      const closeP = clamp((prog - 0.85) / 0.15, 0, 1);
+      if (closeQ) closeQ.style.opacity = (0.15 + 0.85 * closeP).toString();
+      if (attribution) attribution.style.opacity = (0.15 + 0.85 * closeP).toString();
     }
     window.addEventListener("scroll", update, { passive: true });
     window.addEventListener("resize", update);
@@ -247,12 +253,12 @@
 
   /* ── Selected work ────────────────────────────────────────────────────── */
   const WORK_CARDS = [
-    { category: "01 — Education", name: "Zenith School", variant: 1 },
-    { category: "02 — Security", name: "Xtreme Inc.", variant: 2 },
-    { category: "03 — Commerce", name: "Bohemian Alley", variant: 3 },
-    { category: "04 — Food", name: "NoFuss", variant: 4 },
-    { category: "05 — Studio", name: "Reverie", variant: 5 },
-    { category: "06 — Tech", name: "Northpoint", variant: 6 },
+    { name: "Punjabi Kadhai", img: "work/punjabi-kadhai/drive-download-20260724T153409Z-1-001/punjabi-kadhai-brand-pattern.png", href: "work/punjabi-kadhai/index.html" },
+    { name: "GoPhrasing",     img: "work/go-phrasing/drive-download-20260731T172209Z-1-001/GoPhrasing-App-Icon-Mob-Mockup.png", href: "work/go-phrasing/index.html" },
+    { name: "Pink Tiger",     img: "work/pink-tiger/drive-download-20260731T075215Z-1-001/Pink-Tiger-Brand-identity-Logo-Mockup.png", href: "work/pink-tiger/index.html" },
+    { name: "Curious Gigglers", img: "work/curious-gigglers/drive-download-20260731T062340Z-1-001/Curious-Gigglers-Logo-Mockup_.png", href: "work/curious-gigglers/index.html" },
+    { name: "Baking Diaries", img: "brand/Baking-Diaries-kurseong.png", href: "#" },
+    { name: "Cleaon",         img: "brand/Cleaon-Care.png",             href: "#" },
   ];
   const STACK = [
     { x: -2, y: 0, r: -8 }, { x: -1, y: -1, r: -4 }, { x: 0, y: 0, r: -1 },
@@ -268,8 +274,11 @@
   ];
   const lerpPos = (a, b, t) => ({ x: lerp(a.x, b.x, t), y: lerp(a.y, b.y, t), r: lerp(a.r, b.r, t) });
 
-  function cardInner() {
-    return '<div class="overlay"><span>VIEW PROJECT →</span></div>';
+  function cardInner(card) {
+    const img = card.img
+      ? '<img src="' + card.img + '" alt="' + card.name + '" style="position:absolute;inset:0;width:100%;height:100%;object-fit:cover;display:block;" />'
+      : '';
+    return img + '<div class="overlay"><span>VIEW PROJECT →</span></div>';
   }
 
   function initSelectedWork() {
@@ -286,11 +295,12 @@
       "</div>";
 
     const stage = $("#work-stage", desktop) || desktop.querySelector(".work-stage");
-    const cardEls = WORK_CARDS.map((card) => {
+    const cardEls = WORK_CARDS.map((card, i) => {
       const a = document.createElement("a");
-      a.href = "#";
+      a.href = card.href || "#";
       a.className = "work-card";
-      a.innerHTML = cardInner();
+      a.style.zIndex = WORK_CARDS.length - i;
+      a.innerHTML = cardInner(card);
       stage.appendChild(a);
       return a;
     });
@@ -304,10 +314,10 @@
     const mlist = mobile.querySelector(".work-mobile-list");
     WORK_CARDS.forEach((card, i) => {
       const a = document.createElement("a");
-      a.href = "#";
+      a.href = card.href || "#";
       a.className = "work-mcard reveal";
       a.style.transitionDelay = (i * 0.05) + "s";
-      a.innerHTML = cardInner();
+      a.innerHTML = cardInner(card);
       mlist.appendChild(a);
     });
 
@@ -345,12 +355,12 @@
     rocket: '<path d="M4.5 16.5c-1.5 1.26-2 5-2 5s3.74-.5 5-2c.71-.84.7-2.13-.09-2.91a2.18 2.18 0 0 0-2.91-.09z"/><path d="m12 15-3-3a22 22 0 0 1 2-3.95A12.88 12.88 0 0 1 22 2c0 2.72-.78 7.5-6 11a22.35 22.35 0 0 1-4 2z"/><path d="M9 12H4s.55-3.03 2-4c1.62-1.08 5 0 5 0"/><path d="M12 15v5s3.03-.55 4-2c1.08-1.62 0-5 0-5"/>',
   };
   const PROCESS = [
-    { num: "01", icon: "search", title: "Knowing the Business", desc: "Every branding project starts with understanding the business behind the brand. We dive deep into your business goals, target audience, industry, competitors and market to build a clear picture before developing your brand strategy." },
-    { num: "02", icon: "target", title: "Finding Your Edge", desc: "A strong brand stands for something specific. Through brand positioning and market research, we identify what makes your business different, who it serves best and how it can occupy a space that's difficult to replace." },
-    { num: "03", icon: "fileText", title: "Defining Your Brand", desc: "This is where your brand strategy comes together. We define your brand's purpose, brand vision, values, positioning, messaging and brand voice to create a clear foundation for every future marketing and design decision." },
-    { num: "04", icon: "heart", title: "Humanising the Brand", desc: "Our favourite part because this is where brands stop feeling like businesses and start feeling human. It's the moment your brand begins to feel like a person instead of a project. We shape its brand personality, tone of voice and communication style, creating a brand people don't just recognise, but they connect with." },
-    { num: "05", icon: "penTool", title: "Crafting the Identity", desc: "Once the strategy is in place, we translate it into a complete visual identity. From logo design and typography to colour palettes, photography direction and graphic systems, every element is created to reflect your brand consistently across every touchpoint." },
-    { num: "06", icon: "rocket", title: "Bringing It to Life", desc: "A brand does not just live in a digital presentation, it lives in the real world. We apply your visual identity across packaging design, social media, stationery, marketing collateral, print and digital touchpoints to create a complete brand system that's ready to grow with your business." },
+    { num: "01", icon: "search", title: "Knowing the Business", desc: "A strong brand starts with a deep understanding of the business, the people it serves, and the market it operates in." },
+    { num: "02", icon: "target", title: "Finding Your Edge", desc: "Every existing successful brand stands for something specific, and this is step where that unique space is uncovered." },
+    { num: "03", icon: "fileText", title: "Defining Your Brand", desc: "A clear strategy brings together your purpose, positioning, voice, and values into one shared direction." },
+    { num: "04", icon: "heart", title: "Humanising the Brand", desc: "Brands become more relatable when they feel human. This is where personality, tone, and character begin to take shape." },
+    { num: "05", icon: "penTool", title: "Crafting the Identity", desc: "With a clear strategy in place, the visual identity becomes an expression of the brand—not just decoration." },
+    { num: "06", icon: "rocket", title: "Bringing It to Life", desc: "A brand only becomes real when it’s experienced. Every touchpoint should feel consistent, familiar, and unmistakably yours." },
   ];
   function initProcess() {
     const mount = $("#process-steps");
@@ -370,17 +380,17 @@
 
   /* ── Services ─────────────────────────────────────────────────────────── */
   const SERVICES = [
-    { num: "01", category: "Brand Strategy System", heading: "The hardest branding decision isn't your logo. It's giving people a reason to remember you.", desc: "Before we design anything, we help you define your positioning, understand your audience and uncover what makes your business worth choosing. That's what turns a business into a memorable brand.", flip: false, dark: false },
-    { num: "02", category: "Brand Identity System", heading: "Build A Brand People Recognise", desc: "Recognition isn't built through a logo alone. It's built through consistency. We design an identity system (logo, typography, colours, imagery and brand guidelines) that makes your brand instantly known whether someone sees your packaging on quick commerce, website, social media or billboards.", flip: true, dark: true },
-    { num: "03", category: "Packaging Design System", heading: "Win The Shelf Before The Sale!", desc: "Shelf space is expensive, but grabbing attention is even more valuable. Your product packaging has just a few seconds to communicate, persuade and reassure before a customer picks it up. We design strategic packaging that captures attention, intrigues and makes people choose you over competitors.", flip: false, dark: false },
+    { num: "01", category: "BRAND STRATEGY SYSTEM", heading: "The hardest branding decision isn't your logo. It's giving people a reason to remember you.", desc: "Before we design anything, we help you define your positioning, understand your audience and uncover what makes your business worth choosing. That's what turns a business into a memorable brand.", flip: false, dark: false, img: "brand/Brand-strategy.png" },
+    { num: "02", category: "BRAND IDENTITY SYSTEM", heading: "Build A Brand People Recognise", desc: "Recognition isn't built through a logo alone. It's built through consistency. We design an identity system (logo, typography, colours, imagery and brand guidelines) that makes your brand instantly known whether someone sees your packaging on quick commerce, website, social media or billboards.", flip: true, dark: true, img: "brand/Brand-identity.png" },
+    { num: "03", category: "PACKAGING DESIGN SYSTEM", heading: "Win The Shelf Before The Sale!", desc: "Shelf space is expensive, but grabbing attention is even more valuable. Your product packaging has just a few seconds to communicate, persuade and reassure before a customer picks it up. We design strategic packaging that captures attention, intrigues and makes people choose you over competitors.", flip: false, dark: false, img: "brand/Packaging-design.png" },
   ];
   function initServices() {
     const container = $("#services-container");
     if (!container) return;
-    const CARD_H = 514;
+    const CARD_H = 380;
     container.style.height = (CARD_H * SERVICES.length + 400) + "px";
-    const image = '<div class="service-image"><div class="placeholder-visual"><span>Image Placeholder</span></div></div>';
     SERVICES.forEach((svc) => {
+      const image = '<div class="service-image"><img src="' + svc.img + '" alt="' + svc.category + '" loading="lazy" /></div>';
       const text =
         '<div class="service-text ' + (svc.dark ? "dark" : "light") + '">' +
           "<h3>" + svc.category + "</h3>" +
@@ -397,25 +407,27 @@
 
   /* ── Reviews ──────────────────────────────────────────────────────────── */
   const REVIEWS = [
-    { rating: "4.9", name: "Jared Kim", role: "Marketing Director", quote: "Proactive, precise, and easy to work with — no hand-holding needed, just smooth collaboration from start to finish.", avatar: "https://i.pravatar.cc/48?img=11" },
-    { rating: "5.0", name: "Maya Collins", role: "Head of Product", quote: "Felt like an embedded team with zero friction; communication was clear, and revisions landed perfectly on the first go.", avatar: "https://i.pravatar.cc/48?img=12" },
-    { rating: "4.9", name: "Jesse Leigh", role: "CEO & Founder", quote: "The quality was unmatched. We submitted our request on Monday and had polished designs by Wednesday.", avatar: "https://i.pravatar.cc/48?img=13" },
-    { rating: "4.9", name: "Benjamin Daul", role: "Head of Engineering", quote: "We've tried other design subscriptions — none compare to Formix. Professional, reliable, and seriously creative.", avatar: "https://i.pravatar.cc/48?img=14" },
-    { rating: "5.0", name: "Michael Joseph", role: "Head of Content", quote: "Formix completely transformed the way we approach design. The turnaround time is insane and the output's always on-brand.", avatar: "https://i.pravatar.cc/48?img=15" },
-    { rating: "5.0", name: "Amy Louise", role: "Customer Success Manager", quote: "It felt like an in-house design team. Communication was seamless, and revisions were spot on from the first pass.", avatar: "https://i.pravatar.cc/48?img=16" },
+    { rating: "5.0", name: "Nimisha Modi", role: "Founder, Bohemian Alley", quote: "Jasgul did an amazing job of making my vision come to life." },
+    { rating: "5.0", name: "Bhawna Gupta", role: "Founder, NoFuss Foodworks", quote: "I had a great experience working with Chapter Red Designs." },
+    { rating: "5.0", name: "Anamika Mahajan", role: "Founder, Zenith School Of Foreign Languages", quote: "What stood out most about this agency was their ability to deeply understand my vision." },
+    { rating: "4.5", name: "Manny Dhir", role: "CEO, Xtreme Security Inc", quote: "Their responsiveness to our needs was impressive; they were always quick to address any changes or feedback." },
   ];
   function initReviews() {
     const grid = $("#reviews-grid");
     if (!grid) return;
-    const star = '<svg width="26" height="26" viewBox="0 0 24 24" fill="#E42222"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>';
-    const stars = star.repeat(5);
-    const silhouette = '<svg class="review-avatar" viewBox="0 0 36 36" fill="none" xmlns="http://www.w3.org/2000/svg"><circle cx="18" cy="18" r="18" fill="#E8E8E8"/><circle cx="18" cy="14" r="6" fill="#C0C0C0"/><path d="M6 33c0-6.627 5.373-12 12-12s12 5.373 12 12" fill="#C0C0C0"/></svg>';
+    const starFull = '<svg width="26" height="26" viewBox="0 0 24 24" fill="#E42222"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>';
+    const starHalf = '<svg width="26" height="26" viewBox="0 0 24 24"><defs><linearGradient id="hg"><stop offset="50%" stop-color="#E42222"/><stop offset="50%" stop-color="#D0D0D0"/></linearGradient></defs><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2" fill="url(#hg)"/></svg>';
+    function renderStars(rating) {
+      const val = parseFloat(rating);
+      const full = Math.floor(val);
+      const half = val % 1 >= 0.5 ? 1 : 0;
+      return starFull.repeat(full) + (half ? starHalf : '');
+    }
     grid.innerHTML = REVIEWS.map((r, i) =>
       '<div class="review-card reveal" style="transition-delay:' + (i * 0.08) + 's">' +
-        '<div class="review-stars">' + stars + "</div>" +
+        '<div class="review-stars">' + renderStars(r.rating) + "</div>" +
         '<p class="review-text">&ldquo;' + r.quote + "&rdquo;</p>" +
         '<div class="review-foot">' +
-          silhouette +
           '<div class="info"><p class="name">' + r.name + '</p><p class="role">' + r.role + "</p></div>" +
         "</div>" +
       "</div>"
@@ -501,11 +513,63 @@
     els.forEach((el) => io.observe(el));
   }
 
+  /* ── Mobile nav (hamburger) ───────────────────────────────────────────── */
+  function initMobileNav() {
+    const hamburger = $("#hamburger");
+    const mobileNav = $("#mobile-nav");
+    if (!hamburger || !mobileNav) return;
+
+    // Clone logo from desktop navbar
+    const desktopLogo = $(".navbar-logo");
+    const mobileLogoSlot = $(".mobile-nav-logo", mobileNav);
+    if (desktopLogo && mobileLogoSlot) {
+      mobileLogoSlot.href = desktopLogo.href;
+      mobileLogoSlot.innerHTML = desktopLogo.innerHTML;
+    }
+
+    // Populate links from desktop navbar
+    const linksContainer = $("#mobile-nav-links");
+    if (linksContainer) {
+      document.querySelectorAll(".navbar-nav .navbar-link").forEach((link) => {
+        const a = document.createElement("a");
+        a.href = link.href;
+        a.textContent = link.textContent.trim();
+        a.className = "mobile-nav-link";
+        linksContainer.appendChild(a);
+      });
+    }
+
+    // Set CTA href from desktop .btn-call
+    const desktopCta = $(".btn-call");
+    const mobileCta = $("#mobile-nav-cta");
+    if (desktopCta && mobileCta) mobileCta.href = desktopCta.href;
+
+    function close() {
+      mobileNav.classList.remove("open");
+      hamburger.classList.remove("open");
+      document.body.style.overflow = "";
+    }
+
+    hamburger.addEventListener("click", () => {
+      const opening = !mobileNav.classList.contains("open");
+      mobileNav.classList.toggle("open");
+      hamburger.classList.toggle("open");
+      document.body.style.overflow = opening ? "hidden" : "";
+    });
+
+    $("#mobile-nav-close", mobileNav).addEventListener("click", close);
+
+    // Close on any link or CTA click
+    mobileNav.addEventListener("click", (e) => {
+      if (e.target.tagName === "A") close();
+    });
+  }
+
   /* ── Boot ─────────────────────────────────────────────────────────────── */
   document.addEventListener("DOMContentLoaded", () => {
-    initIntro();
+    initIntro();   // calls initHero() at the right moment internally
     initNavbar();
-    initHero();
+    initMobileNav();
     initDustField();
     initShowreel();
     initWhy();

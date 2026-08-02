@@ -1,0 +1,286 @@
+<!DOCTYPE html>
+<html lang="en" class="antialiased">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Pink Tiger Catering Brand Identity | Chapter Red Designs</title>
+  <meta name="description" content="Discover how Chapter Red created a premium brand identity for Pink Tiger, the luxury catering venture by Paratha2Pasta serving weddings, corporate events, and private celebrations across Vancouver." />
+
+  <!-- Open Graph -->
+  <meta property="og:type" content="article" />
+  <meta property="og:title" content="Pink Tiger Catering Brand Identity Case Study | Chapter Red" />
+  <meta property="og:description" content="Discover how Chapter Red created a bold, premium catering brand identity for Pink Tiger through strategy, visual identity, and a distinctive tiger emblem." />
+
+  <!-- Twitter Card -->
+  <meta name="twitter:card" content="summary_large_image" />
+  <meta name="twitter:title" content="Catering Brand Identity Case Study – Pink Tiger" />
+  <meta name="twitter:description" content="A strategy-first premium catering branding project by Chapter Red featuring brand identity, tiger emblem, and visual identity system." />
+  <link rel="icon" href="../../vector.png" />
+  <link rel="stylesheet" href="../../styles.css" />
+  <link rel="stylesheet" href="../../work.css" />
+  <style>
+    /* Bottom spacing: compact on mobile, full on desktop */
+    .pk-wrap { padding-bottom: 60px; }
+    @media (min-width: 768px) {
+      .pk-wrap { padding-bottom: 120px; }
+      .pk-about-meta { padding-top: 5rem; }
+    }
+    @media (min-width: 1100px) {
+      .pk-craft { gap: 200px; }
+    }
+
+    /* Edge image: portrait on mobile, fixed-height on desktop */
+    .pk-edge .pk-photo--edge {
+      aspect-ratio: 3 / 4;
+      object-fit: cover;
+    }
+    @media (min-width: 768px) {
+      .pk-edge .pk-photo--edge {
+        aspect-ratio: auto;
+        height: 640px;
+      }
+    }
+
+    /* Craft section portrait image */
+    .pk-craft .pk-photo--craft {
+      aspect-ratio: 3 / 4;
+      object-fit: cover;
+      min-width: 0;
+    }
+
+    /* Portrait 2-col row (Glass + Coaster) */
+    .pk-row--portrait .pk-photo {
+      aspect-ratio: 3 / 4;
+      object-fit: cover;
+    }
+
+    /* Full-width landscape images:
+       4:3 on mobile (better visual weight at narrow widths),
+       1300×780 on tablet/desktop */
+    .pk-wrap > .pk-photo,
+    .pk-gallery > .pk-photo,
+    .pk-photo.pk-mt-hero {
+      aspect-ratio: 4 / 3;
+      object-fit: cover;
+    }
+    @media (min-width: 768px) {
+      .pk-wrap > .pk-photo,
+      .pk-gallery > .pk-photo,
+      .pk-photo.pk-mt-hero {
+        aspect-ratio: 1300 / 780;
+      }
+    }
+  </style>
+</head>
+<body>
+  <main class="pk">
+    <!-- ── Navbar ── -->
+    <header class="navbar" id="navbar">
+      <div class="navbar-inner">
+        <a href="../../index.html" class="navbar-logo"><img src="../../brand/logo.png" alt="Chapter Red" /></a>
+        <nav class="navbar-nav">
+          <a class="navbar-link" href="../../index.html">HOME</a>
+          <a class="navbar-link" href="../../index.html#services">SERVICES</a>
+          <a class="navbar-link" href="../index.html">WORK</a>
+          <a class="navbar-link" href="../../index.html#about">ABOUT</a>
+          <a class="navbar-link" href="#">INSIGHTS</a>
+        </nav>
+        <a href="../../book-a-call.html" class="btn-call">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72c.127.96.361 1.903.7 2.81a2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45c.907.339 1.85.573 2.81.7A2 2 0 0 1 22 16.92z"/></svg>
+          BOOK A CALL
+        </a>
+      <button class="hamburger" id="hamburger" aria-label="Open menu">
+        <span></span><span></span><span></span>
+      </button>
+      </div>
+    </header>
+        <div class="mobile-nav" id="mobile-nav">
+          <div class="mobile-nav-header">
+            <a class="navbar-logo mobile-nav-logo" href="../../index.html"><img src="../../brand/logo.png" alt="Chapter Red" /></a>
+            <button class="mobile-nav-close" id="mobile-nav-close" aria-label="Close menu">
+              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+            </button>
+          </div>
+          <nav class="mobile-nav-links" id="mobile-nav-links"></nav>
+          <div class="mobile-nav-footer">
+            <a class="btn-call-lg" id="mobile-nav-cta" href="../../book-a-call.html">
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72c.127.96.361 1.903.7 2.81a2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45c.907.339 1.85.573 2.81.7A2 2 0 0 1 22 16.92z"/></svg>
+              BOOK A CALL
+            </a>
+          </div>
+        </div>
+
+    <div class="pk-wrap">
+      <!-- Back to Projects -->
+      <a href="../index.html" class="pk-back">
+        <span class="pk-back-icon">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#101214" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="19" y1="12" x2="5" y2="12"/><polyline points="12 19 5 12 12 5"/></svg>
+        </span>
+        <span class="pk-back-text">Back to Projects</span>
+      </a>
+
+      <!-- Title + Hero -->
+      <section aria-labelledby="project-title">
+        <h1 id="project-title" class="pk-title pk-title--h1 pk-project">Pink Tiger brings restaurant-quality hospitality beyond the restaurant in Vancouver</h1>
+        <img class="pk-photo pk-mt-hero" src="drive-download-20260731T075215Z-1-001/Pink-Tiger-Brand-identity-Truck-Mockup.png" alt="Pink Tiger premium catering brand identity" loading="eager" />
+      </section>
+
+      <!-- About the Brand -->
+      <section class="pk-about" aria-labelledby="about-brand-title">
+        <div class="pk-about-title">
+          <h2 id="about-brand-title" class="pk-title pk-title--h2">ABOUT THE <br />BRAND</h2>
+        </div>
+        <div class="pk-about-body">
+          <p class="pk-p">
+            Successful hospitality brands don&apos;t always grow by opening more restaurants. Sometimes, they grow by creating entirely new experiences!
+            <br /><br />
+            After building a loyal following through Paratha2Pasta, a popular Indian restaurant in Surrey, British Columbia, the team expanded into premium catering services for weddings, corporate events, and private celebrations across Surrey, Vancouver, and the Lower Mainland.
+            <br /><br />
+            Rather than operating as &ldquo;Paratha2Pasta Catering,&rdquo; they chose to build a standalone brand with its own identity. While the food already carried the trust and reputation, the catering business needed a distinct visual identity that reflected a more elevated experience.
+            <br /><br />
+            So, the goal wasn&apos;t simply to look luxurious, it was to build a brand that guests would associate with refined hospitality, thoughtful presentation, and memorable celebrations from the very first impression.
+          </p>
+        </div>
+        <div class="pk-about-meta">
+          <dl class="pk-dl">
+            <div>
+              <dt class="pk-dt">INDUSTRY</dt>
+              <dd class="pk-dd">Food &amp; Hospitality</dd>
+            </div>
+            <div>
+              <dt class="pk-dt">SERVICES</dt>
+              <dd class="pk-dd">Brand Strategy, Brand Visuals</dd>
+            </div>
+            <div>
+              <dt class="pk-dt">PROJECT CREDITS</dt>
+              <dd class="pk-dd pk-dd--credits">
+                <span class="pk-dark">Jasgul/ </span><span class="pk-red">Creative Director<br /></span>
+                <span class="pk-dark">Sadaf Baloch/ </span><span class="pk-red">Designer<br /></span>
+                <span class="pk-dark">Yashna Harry/ </span><span class="pk-red">Designer</span>
+              </dd>
+            </div>
+          </dl>
+        </div>
+      </section>
+
+      <!-- Full-width after About -->
+      <img class="pk-photo pk-mt-90" src="drive-download-20260731T075215Z-1-001/Pink-Tiger-Brand-identity-Visiting-card-Mockup.png" alt="Luxury catering branding for Vancouver" loading="lazy" />
+      <img class="pk-photo pk-mt-105" src="drive-download-20260731T075215Z-1-001/Pink-Tiger-Brand-identity-Logo-Mockup.png" alt="Catering truck branding and visual identity" loading="lazy" />
+
+      <!-- Finding Brand's Edge -->
+      <section class="pk-edge" aria-labelledby="finding-edge-title">
+        <img class="pk-photo pk-photo--edge" src="drive-download-20260731T075215Z-1-001/Pink-Tiger-Brand-identity-Menu-Mockup.png" alt="Pink Tiger menu and stationery branding" loading="lazy" />
+        <div class="pk-edge-body">
+          <h2 id="finding-edge-title" class="pk-title pk-title--h3">
+            <span class="pk-dark">FINDING BRAND&apos;S </span><span class="pk-red">EDGE</span>
+          </h2>
+          <div class="pk-edge-block">
+            <h3 class="pk-sub pk-red">WHAT WE FOUND</h3>
+            <p class="pk-p">
+              The name already carried a strong visual advantage. Mention &ldquo;Pink Tiger&rdquo; and most people instantly imagine two things: pink and a tiger. The opportunity wasn&apos;t to invent a complex story, but to turn that instant mental picture into a brand people could recognise at a glance.
+            </p>
+          </div>
+          <div class="pk-edge-block">
+            <h3 class="pk-sub pk-red">WHAT WE CHOSE</h3>
+            <p class="pk-p">
+              We decided to embrace simplicity over complexity &mdash; instead of adding layers of symbolism, we leaned into the strongest assets the brand already had. A confident tiger emblem, a distinctive pink palette, and refined typography to create an identity that&apos;s easy to recognise, easy to remember, and impossible to mistake for anything else.
+            </p>
+          </div>
+          <div class="pk-edge-block pk-edge-block--tight">
+            <h3 class="pk-sub pk-red">WHAT WE REFUSED</h3>
+            <p class="pk-p">
+              We resisted the temptation to over-design. Rather than filling the identity with decorative elements, we kept every visual purposeful. The result is a clean, premium identity that stands out whether it&apos;s on a business card or wrapped across an entire catering van.
+            </p>
+          </div>
+        </div>
+      </section>
+
+      <!-- Post-edge images -->
+      <img class="pk-photo pk-mt-106" src="drive-download-20260731T075215Z-1-001/Pink-Tiger-Brand-identity-Collage.png" alt="Hospitality brand identity by Chapter Red" loading="lazy" />
+      <img class="pk-photo pk-mt-103" src="drive-download-20260731T075215Z-1-001/Pink-Tiger-Brand-identity-Coasters-Mockup.png" alt="Pink Tiger branded coasters mockup" loading="lazy" />
+      <img class="pk-photo pk-mt-103" src="drive-download-20260731T075215Z-1-001/Pink-Tiger-Brand-identity-Food.png" alt="Food and hospitality visual identity" loading="lazy" />
+      <img class="pk-photo pk-mt-103" src="drive-download-20260731T075215Z-1-001/Pink-Tiger-Brand-identity-Visiting-Card-Mockup(1).png" alt="Pink Tiger visiting cards on silver tray" loading="lazy" />
+
+      <!-- Crafting the Identity -->
+      <section class="pk-craft" aria-labelledby="crafting-identity-title">
+        <div class="pk-craft-body">
+          <h2 id="crafting-identity-title" class="pk-title pk-title--h1">CRAFTING THE <br />IDENTITY</h2>
+          <p class="pk-p">
+            We didn&apos;t want people to simply read the name Pink Tiger.
+            <br />We wanted them to picture it instantly.
+            <br /><br />
+            With the direction clearly defined, we created a brand identity that embraces the bold simplicity of the name. The striking tiger emblem becomes the brand&apos;s unmistakable signature, while the vibrant pink palette adds warmth, celebration, and instant recognition. Paired with refined typography and understated layouts, the identity feels premium without relying on unnecessary embellishments.
+            <br /><br />
+            From the logo design and stationery to menus, catering vehicles, event signage, and digital applications, every touchpoint was designed to work as one cohesive visual identity system.
+            <br /><br />
+            The result is a catering brand identity that&apos;s easy to recognise, built to scale, and confidently reflects the elevated hospitality behind every Pink Tiger experience.
+          </p>
+        </div>
+        <img class="pk-photo pk-photo--craft" src="drive-download-20260731T075215Z-1-001/Pink-Tiger-Brand-identity-Coaster-Mockup2.png" alt="Pink Tiger branded coaster with wine glass, close-up" loading="lazy" />
+      </section>
+
+      <!-- Identity system bridge images -->
+      <img class="pk-photo pk-mt-103" src="drive-download-20260731T075215Z-1-001/Pink-Tiger-Brand-identity-Logo-exploration.png" alt="Premium catering logo and packaging design" loading="lazy" />
+      <img class="pk-photo pk-mt-103" src="drive-download-20260731T075215Z-1-001/Pink-Tiger-Brand-identity-Logo.png" alt="Pink Tiger brand colour palette" loading="lazy" />
+      <div class="pk-row pk-mt-103 pk-row--3">
+        <img class="pk-photo" src="drive-download-20260731T075215Z-1-001/Pink-Tiger-Brand-identity-Mockup.png" alt="Luxury event catering brand design" loading="lazy" />
+        <img class="pk-photo" src="drive-download-20260731T075215Z-1-001/Pink-Tiger-Brand-identity-Chef.png" alt="Pink Tiger catering chef plating food" loading="lazy" />
+        <img class="pk-photo" src="drive-download-20260731T075215Z-1-001/Pink-Tiger-Brand-identity-Napkin-Mockup.png" alt="Pink Tiger embroidered logo close-up on white linen" loading="lazy" />
+      </div>
+      <img class="pk-photo pk-mt-103" src="drive-download-20260731T075215Z-1-001/Pink-Tiger-Brand-identity-Colour-Pallet.png" alt="Pink Tiger brand colour palette — magenta, black, baby powder" loading="lazy" />
+      <div class="pk-row pk-mt-103 pk-row--2">
+        <img class="pk-photo" src="drive-download-20260731T075215Z-1-001/Pink-Tiger-Brand-identity-logocloseup-Mockup.png" alt="Pink Tiger embroidered logo close-up on pink apron" loading="lazy" />
+        <img class="pk-photo" src="drive-download-20260731T075215Z-1-001/Pink-Tiger-Brand-identity-Apron-Mockup.png" alt="Pink Tiger branded apron — person holding cocktails tray" loading="lazy" />
+      </div>
+      <img class="pk-photo pk-mt-103" src="drive-download-20260731T075215Z-1-001/Pink-Tiger-Brand-identity-Typo.png" alt="Pink Tiger brand typography — Lancea and Organica fonts" loading="lazy" />
+      <div class="pk-row pk-mt-103 pk-row--2 pk-row--portrait">
+        <img class="pk-photo" src="drive-download-20260731T075215Z-1-001/Pink-Tiger-Brand-identity-Glass-Mockup.png" alt="Pink Tiger cocktail glass mockup" loading="lazy" />
+        <img class="pk-photo" src="drive-download-20260731T075215Z-1-001/Pink-Tiger-Brand-identity-Coaster-Mockup2.png" alt="Pink Tiger coaster with wine glass stem on pink background" loading="lazy" />
+      </div>
+      <img class="pk-photo pk-mt-103" src="drive-download-20260731T075215Z-1-001/Pink-Tiger-Brand-identity-Social-Media.png" alt="Vancouver catering business branding" loading="lazy" />
+      <img class="pk-photo pk-mt-103" src="drive-download-20260731T075215Z-1-001/Pink-Tiger-Brand-identity-Menu-Mockup(1).png" alt="Pink Tiger visiting cards on silver cloche tray" loading="lazy" />
+      <img class="pk-photo pk-mt-103" src="drive-download-20260731T075215Z-1-001/Pink-Tiger-Brand-identity-Plate-Mockup.png" alt="Pink Tiger place setting with pink napkin and gold cutlery" loading="lazy" />
+      <img class="pk-photo pk-mt-103" src="drive-download-20260731T075215Z-1-001/Pink-Tiger-Brand-identity-Billboard-Mockup.png" alt="Catering vehicle branding design" loading="lazy" />
+      <img class="pk-photo pk-mt-103" src="drive-download-20260731T075215Z-1-001/Pink-Tiger-Brand-identity-Logo-Mockup(1).png" alt="Pink Tiger visiting card on velvet chair" loading="lazy" />
+
+    </div>
+  </main>
+
+  <section class="pk-cta">
+    <div class="pk-wrap">
+      <h2 class="pk-cta-heading">Looking to build a <span>restaurant brand</span> that people remember?</h2>
+      <div class="pk-cta-right">
+        <p class="pk-cta-body">At Chapter Red, we help restaurants, cafés, and hospitality businesses build memorable brands through strategy-led branding, visual identity design, and packaging that people connect with.</p>
+        <a href="../../book-a-call.html" class="btn-call-lg">BOOK A CALL</a>
+      </div>
+    </div>
+  </section>
+
+          <footer class="footer">
+          <div class="footer-quote-wrap">
+            <p class="footer-quote-text">May your <span class="footer-quote-dot">next chapter</span> be your strongest one yet<span class="footer-quote-dot">.</span></p>
+            <div class="footer-right-group">
+              <div class="footer-socials">
+                <a href="https://www.behance.net/chapterreddesigns" target="_blank" rel="noopener" aria-label="Behance">
+                  <img src="../../brand/behance.png" alt="Behance" width="16" height="16" style="display:block;object-fit:contain" />
+                </a>
+                <a href="https://www.instagram.com/chapterreddesigns/" target="_blank" rel="noopener" aria-label="Instagram">
+                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" width="15" height="15"><rect x="2" y="2" width="20" height="20" rx="5" ry="5"/><path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"/><line x1="17.5" y1="6.5" x2="17.51" y2="6.5"/></svg>
+                </a>
+                <a href="https://www.linkedin.com/company/chapterred/" target="_blank" rel="noopener" aria-label="LinkedIn">
+                  <img src="../../brand/linnkedin.png" alt="LinkedIn" width="16" height="16" style="display:block;object-fit:contain" />
+                </a>
+              </div>
+              <a class="footer-email-link" href="mailto:jasgul@chapterred.com">jasgul@chapterred.com</a>
+            </div>
+          </div>
+          <div class="footer-logo-section">
+            <img src="../../brand/logo-footer.svg" alt="Chapter Red" class="footer-logo-img" />
+          </div>
+          <div class="footer-bottom">
+            <p class="footer-copyright">© 2026 CHAPTER RED DESIGNS. All Rights Reserved.</p>
+          </div>
+        </footer>
+  <script src="../../main.js"></script>
+</body>
+</html>

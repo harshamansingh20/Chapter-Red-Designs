@@ -1,0 +1,233 @@
+<!DOCTYPE html>
+<html lang="en" class="antialiased">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Book a Call — Chapter Red</title>
+  <meta name="description" content="Start a conversation with Chapter Red. Tell us about your business and we'll get back to you within 24 hours." />
+  <link rel="icon" href="vector.png" />
+  <link rel="stylesheet" href="styles.css" />
+  <script src="https://www.google.com/recaptcha/api.js" async defer></script>
+</head>
+<body>
+  <div class="site-root instant" id="site-root">
+    <div class="page-bg">
+      <div class="page-grid">
+        <span style="left:20%"></span>
+        <span style="left:38%"></span>
+        <span style="left:50%"></span>
+        <span style="left:62%"></span>
+        <span style="left:80%"></span>
+      </div>
+
+      <div class="page-z">
+        <!-- ── Navbar ── -->
+        <header class="navbar scrolled" id="navbar">
+          <div class="navbar-inner">
+            <a href="index.html" class="navbar-logo"><img src="brand/logo.png" alt="Chapter Red" /></a>
+            <nav class="navbar-nav">
+              <a class="navbar-link" href="index.html">HOME</a>
+              <a class="navbar-link" href="index.html#services">SERVICES</a>
+              <a class="navbar-link" href="work/index.html">WORK</a>
+              <a class="navbar-link" href="index.html#about">ABOUT</a>
+              <a class="navbar-link" href="#">INSIGHTS</a>
+            </nav>
+            <button class="hamburger" id="hamburger" aria-label="Open menu">
+              <span></span><span></span><span></span>
+            </button>
+          </div>
+        </header>
+        <div class="mobile-nav" id="mobile-nav">
+          <div class="mobile-nav-header">
+            <a class="navbar-logo mobile-nav-logo" href="index.html"><img src="brand/logo.png" alt="Chapter Red" /></a>
+            <button class="mobile-nav-close" id="mobile-nav-close" aria-label="Close menu">
+              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+            </button>
+          </div>
+          <nav class="mobile-nav-links" id="mobile-nav-links"></nav>
+          <div class="mobile-nav-footer">
+            <a class="btn-call-lg" id="mobile-nav-cta" href="book-a-call.html">
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72c.127.96.361 1.903.7 2.81a2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45c.907.339 1.85.573 2.81.7A2 2 0 0 1 22 16.92z"/></svg>
+              BOOK A CALL
+            </a>
+          </div>
+        </div>
+
+        <div style="padding-top:4.5rem">
+          <!-- ── Contact ── -->
+          <section class="contact" id="contact">
+            <div class="contact-inner" style="max-width:100%">
+              <div style="text-align:center; margin-bottom:2.5rem">
+                <h2 style="font-size:clamp(2rem,4.5vw,3.5rem);font-weight:800;letter-spacing:-0.03em;line-height:1.1;color:#121212;margin-bottom:1rem;text-wrap:balance;max-width:22ch;margin-left:auto;margin-right:auto">Your business deserves a brand people remember.</h2>
+                <p style="font-size:clamp(1.0625rem,1.4vw,1.25rem);color:#4F4F4F;line-height:1.5;margin-bottom:0.75rem">If your business has outgrown its brand, it&apos;s time for one that&apos;s built with intention and not just aesthetics.</p>
+                <p style="font-size:clamp(1.0625rem,1.4vw,1.25rem);color:#4F4F4F;line-height:1.5"><strong>Let&apos;s start with a conversation. We&apos;ll get back to you within 24 hours.</strong></p>
+              </div>
+              <div class="contact-card" style="max-width:56rem;margin:0 auto;width:100%">
+
+                <!-- ── Success state (hidden until submission) ── -->
+                <div id="contact-success" style="display:none;text-align:center;padding:3rem 1rem">
+                  <p style="font-size:1.5rem;font-weight:800;color:#121212;margin-bottom:0.75rem">We&apos;ve got your message.</p>
+                  <p style="font-size:1rem;color:#4F4F4F;line-height:1.6">We&apos;ll review your enquiry and get back to you within 24 hours.</p>
+                </div>
+
+                <!-- ── Form ── -->
+                <form class="contact-form" id="contact-form">
+                  <!-- Honeypot: invisible to humans, bots fill it in -->
+                  <input type="text" name="_hp" tabindex="-1" autocomplete="off"
+                    style="position:absolute;left:-9999px;width:1px;height:1px;opacity:0;" aria-hidden="true" />
+
+                  <div class="contact-row">
+                    <input class="field" type="text" name="name" placeholder="Full Name" autocomplete="off" />
+                    <input class="field" type="email" name="email" placeholder="Email Address" autocomplete="off" />
+                  </div>
+                  <div class="contact-row">
+                    <input class="field" type="text" name="company" placeholder="Company / Brand" autocomplete="off" />
+                    <input class="field" type="url" name="website" placeholder="Website (optional)" autocomplete="off" />
+                  </div>
+                  <div>
+                    <p class="field-label">Which service are you looking for?</p>
+                    <div class="service-tags">
+                      <button type="button" class="service-tag">Brand Strategy</button>
+                      <button type="button" class="service-tag">Brand Identity</button>
+                      <button type="button" class="service-tag">Packaging Design</button>
+                    </div>
+                  </div>
+                  <div>
+                    <p class="field-label">Tell us about your business</p>
+                    <textarea class="field" name="message" placeholder="What are you building?" rows="3"></textarea>
+                  </div>
+
+                  <!-- reCAPTCHA widget — replace YOUR_RECAPTCHA_SITE_KEY_HERE with your Site Key -->
+                  <div class="g-recaptcha" data-sitekey="6LeJiXAtAAAAABmM5H7StC3I7NQ_BDrQmKzmrGQA" style="margin-bottom:0.5rem"></div>
+
+                  <!-- Inline error message -->
+                  <p id="contact-error" style="display:none;color:#E42222;font-size:0.875rem;margin-bottom:0.75rem;font-family:'Aspekta',sans-serif;font-weight:600"></p>
+
+                  <button type="submit" class="submit-btn">
+                    <span class="fill"></span>
+                    <span class="label">Submit</span>
+                  </button>
+                </form>
+
+              </div>
+            </div>
+          </section>
+
+          <!-- ── Footer ── -->
+          <footer class="footer">
+            <div class="footer-quote-wrap">
+              <p class="footer-quote-text">May your <span class="footer-quote-dot">next chapter</span> be your strongest one yet<span class="footer-quote-dot">.</span></p>
+              <div class="footer-right-group">
+                <div class="footer-socials">
+                  <a href="https://www.behance.net/chapterreddesigns" target="_blank" rel="noopener" aria-label="Behance">
+                    <img src="brand/behance.png" alt="Behance" width="16" height="16" style="display:block;object-fit:contain" />
+                  </a>
+                  <a href="https://www.instagram.com/chapterreddesigns/" target="_blank" rel="noopener" aria-label="Instagram">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" width="15" height="15"><rect x="2" y="2" width="20" height="20" rx="5" ry="5"/><path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"/><line x1="17.5" y1="6.5" x2="17.51" y2="6.5"/></svg>
+                  </a>
+                  <a href="https://www.linkedin.com/company/chapterred/" target="_blank" rel="noopener" aria-label="LinkedIn">
+                    <img src="brand/linnkedin.png" alt="LinkedIn" width="16" height="16" style="display:block;object-fit:contain" />
+                  </a>
+                </div>
+                <a class="footer-email-link" href="mailto:jasgul@chapterred.com">jasgul@chapterred.com</a>
+              </div>
+            </div>
+            <div class="footer-logo-section">
+              <img src="brand/logo-footer.svg" alt="Chapter Red" class="footer-logo-img" />
+            </div>
+            <div class="footer-bottom">
+              <p class="footer-copyright">© 2026 CHAPTER RED DESIGNS. All Rights Reserved.</p>
+            </div>
+          </footer>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script src="main.js"></script>
+  <script>
+    (function () {
+      // ── Replace this with your deployed Apps Script URL ──────────────────
+      var SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbzZAZNflOzKBkge-On6JZPZ9CW-n44VfLo4OvRShWR_R4fAWEC9_jjk61_ZEn3adptIqQ/exec';
+      // ─────────────────────────────────────────────────────────────────────
+
+      var form       = document.getElementById('contact-form');
+      var successEl  = document.getElementById('contact-success');
+      var errorEl    = document.getElementById('contact-error');
+      var submitBtn  = form.querySelector('.submit-btn');
+      var labelEl    = submitBtn.querySelector('.label');
+
+      form.addEventListener('submit', function (e) {
+        e.preventDefault();
+
+        // Collect selected service tags (toggled by main.js with class "selected")
+        var services = Array.from(form.querySelectorAll('.service-tag.selected'))
+          .map(function (t) { return t.textContent.trim(); })
+          .join(', ');
+
+        // reCAPTCHA token
+        var token = (typeof grecaptcha !== 'undefined') ? grecaptcha.getResponse() : '';
+        if (!token) {
+          showError('Please tick the "I\'m not a robot" box before submitting.');
+          return;
+        }
+
+        var payload = {
+          name:     form.querySelector('[name="name"]').value.trim(),
+          email:    form.querySelector('[name="email"]').value.trim(),
+          company:  form.querySelector('[name="company"]').value.trim(),
+          website:  form.querySelector('[name="website"]').value.trim(),
+          services: services,
+          message:  form.querySelector('[name="message"]').value.trim(),
+          token:    token,
+          _hp:      form.querySelector('[name="_hp"]').value
+        };
+
+        // Basic required field check
+        if (!payload.name || !payload.email || !payload.message) {
+          showError('Please fill in your name, email and message.');
+          return;
+        }
+
+        setLoading(true);
+        hideError();
+
+        // Google Apps Script doesn't support CORS, so we use no-cors + text/plain.
+        // The request still executes and writes to the sheet — we just can't read
+        // the response body, so we show success once the network call completes.
+        fetch(SCRIPT_URL, {
+          method:  'POST',
+          mode:    'no-cors',
+          headers: { 'Content-Type': 'text/plain' },
+          body:    JSON.stringify(payload)
+        })
+        .then(function () {
+          form.style.display = 'none';
+          successEl.style.display = 'block';
+        })
+        .catch(function () {
+          showError('Could not send your message. Please try again or email us directly.');
+          if (typeof grecaptcha !== 'undefined') grecaptcha.reset();
+        })
+        .finally(function () {
+          setLoading(false);
+        });
+      });
+
+      function setLoading(on) {
+        submitBtn.disabled = on;
+        labelEl.textContent = on ? 'Sending…' : 'Submit';
+      }
+
+      function showError(msg) {
+        errorEl.textContent = msg;
+        errorEl.style.display = 'block';
+      }
+
+      function hideError() {
+        errorEl.style.display = 'none';
+      }
+    })();
+  </script>
+</body>
+</html>
