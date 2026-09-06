@@ -66,17 +66,16 @@
     /* Full-width landscape images:
        4:3 on mobile (better visual weight at narrow widths),
        1300×780 on tablet/desktop */
-    .pk-wrap > .pk-photo,
-    .pk-gallery > .pk-photo,
-    .pk-photo.pk-mt-hero {
-      aspect-ratio: 4 / 3;
-      object-fit: cover;
-    }
-    @media (min-width: 768px) {
+    /* Mobile & tablet: full-width photos show at their true proportions -
+       no aspect-ratio frame, no cover-crop, so nothing is sliced off the edges.
+       Desktop: a consistent 5:3 frame (every hero is already exactly this ratio,
+       so heroes never crop; other images clip only a few %). */
+    @media (min-width: 1024px) {
       .pk-wrap > .pk-photo,
       .pk-gallery > .pk-photo,
       .pk-photo.pk-mt-hero {
         aspect-ratio: 1300 / 780;
+        object-fit: cover;
       }
     }
   </style>
@@ -91,7 +90,7 @@
           <a class="navbar-link" href="../../index.html">HOME</a>
           <a class="navbar-link" href="../../index.html#services">SERVICES</a>
           <a class="navbar-link" href="../index.html">WORK</a>
-          <a class="navbar-link" href="../../index.html#about">ABOUT</a>
+          <a class="navbar-link navbar-link--disabled" aria-disabled="true" title="Coming soon">ABOUT</a>
           <a class="navbar-link" href="#">INSIGHTS</a>
         </nav>
         <a href="../../book-a-call.html" class="btn-call">
@@ -174,11 +173,11 @@
 
       <!-- Full-width after About -->
       <img class="pk-photo pk-mt-90" src="drive-download-20260731T075215Z-1-001/Pink-Tiger-Brand-identity-Visiting-card-Mockup.png" alt="Luxury catering branding for Vancouver" loading="lazy" />
-      <img class="pk-photo pk-mt-105" src="drive-download-20260731T075215Z-1-001/Pink-Tiger-Brand-identity-Logo-Mockup.png" alt="Catering truck branding and visual identity" loading="lazy" />
+      <img class="pk-photo pk-mt-105" src="drive-download-20260731T075215Z-1-001/Pink-Tiger-Brand-identity-Merch-design.png" alt="Catering truck branding and visual identity" loading="lazy" />
 
       <!-- Finding Brand's Edge -->
       <section class="pk-edge" aria-labelledby="finding-edge-title">
-        <img class="pk-photo pk-photo--edge" src="drive-download-20260731T075215Z-1-001/Pink-Tiger-Brand-identity-Menu-Mockup.png" alt="Pink Tiger menu and stationery branding" loading="lazy" />
+        <img class="pk-photo pk-photo--edge" src="drive-download-20260731T075215Z-1-001/Pink-Tiger-Brand-identity-Menu-Mockup copy.png" alt="Pink Tiger menu and stationery branding" loading="lazy" />
         <div class="pk-edge-body">
           <h2 id="finding-edge-title" class="pk-title pk-title--h3">
             <span class="pk-dark">FINDING BRAND&apos;S </span><span class="pk-red">EDGE</span>
@@ -225,7 +224,7 @@
             The result is a catering brand identity that&apos;s easy to recognise, built to scale, and confidently reflects the elevated hospitality behind every Pink Tiger experience.
           </p>
         </div>
-        <img class="pk-photo pk-photo--craft" src="drive-download-20260731T075215Z-1-001/Pink-Tiger-Brand-identity-Coaster-Mockup2.png" alt="Pink Tiger branded coaster with wine glass, close-up" loading="lazy" />
+        <img class="pk-photo pk-photo--craft" src="drive-download-20260731T075215Z-1-001/Pink-Tiger-Brand-identity-Logo-Mockup.png" alt="Pink Tiger branded coaster with wine glass, close-up" loading="lazy" />
       </section>
 
       <!-- Identity system bridge images -->
@@ -247,7 +246,7 @@
         <img class="pk-photo" src="drive-download-20260731T075215Z-1-001/Pink-Tiger-Brand-identity-Coaster-Mockup2.png" alt="Pink Tiger coaster with wine glass stem on pink background" loading="lazy" />
       </div>
       <img class="pk-photo pk-mt-103" src="drive-download-20260731T075215Z-1-001/Pink-Tiger-Brand-identity-Social-Media.png" alt="Vancouver catering business branding" loading="lazy" />
-      <img class="pk-photo pk-mt-103" src="drive-download-20260731T075215Z-1-001/Pink-Tiger-Brand-identity-Menu-Mockup(1).png" alt="Pink Tiger visiting cards on silver cloche tray" loading="lazy" />
+      <img class="pk-photo pk-mt-103" src="drive-download-20260731T075215Z-1-001/Pink-Tiger-Brand-identity-Menu-Mockup.png" alt="Pink Tiger visiting cards on silver cloche tray" loading="lazy" />
       <img class="pk-photo pk-mt-103" src="drive-download-20260731T075215Z-1-001/Pink-Tiger-Brand-identity-Plate-Mockup.png" alt="Pink Tiger place setting with pink napkin and gold cutlery" loading="lazy" />
       <img class="pk-photo pk-mt-103" src="drive-download-20260731T075215Z-1-001/Pink-Tiger-Brand-identity-Billboard-Mockup.png" alt="Catering vehicle branding design" loading="lazy" />
       <img class="pk-photo pk-mt-103" src="drive-download-20260731T075215Z-1-001/Pink-Tiger-Brand-identity-Logo-Mockup(1).png" alt="Pink Tiger visiting card on velvet chair" loading="lazy" />

@@ -38,7 +38,7 @@
               <a class="navbar-link" href="index.html">HOME</a>
               <a class="navbar-link" href="index.html#services">SERVICES</a>
               <a class="navbar-link" href="work/index.html">WORK</a>
-              <a class="navbar-link" href="index.html#about">ABOUT</a>
+              <a class="navbar-link navbar-link--disabled" aria-disabled="true" title="Coming soon">ABOUT</a>
               <a class="navbar-link" href="#">INSIGHTS</a>
             </nav>
             <button class="hamburger" id="hamburger" aria-label="Open menu">
@@ -67,7 +67,7 @@
           <section class="contact" id="contact">
             <div class="contact-inner" style="max-width:100%">
               <div style="text-align:center; margin-bottom:2.5rem">
-                <h2 style="font-size:clamp(32px,4.5vw,56px);font-weight:800;letter-spacing:-0.03em;line-height:1.1;color:#121212;margin-bottom:1rem;text-wrap:balance;max-width:22ch;margin-left:auto;margin-right:auto">Your business deserves a brand people remember.</h2>
+                <h2 style="font-size:clamp(32px,4.5vw,56px);font-weight:800;letter-spacing:-0.03em;line-height:1.1;color:#121212;margin-bottom:1rem;text-wrap:balance;max-width:22ch;margin-left:auto;margin-right:auto;text-transform:uppercase">Your business deserves a <span style="color:#E42222">brand</span> people remember</h2>
                 <p style="font-size:clamp(17px,1.4vw,20px);color:#4F4F4F;line-height:1.5;margin-bottom:0.75rem">If your business has outgrown its brand, it&apos;s time for one that&apos;s built with intention and not just aesthetics.</p>
                 <p style="font-size:clamp(17px,1.4vw,20px);color:#4F4F4F;line-height:1.5"><strong>Let&apos;s start with a conversation. We&apos;ll get back to you within 24 hours.</strong></p>
               </div>
@@ -192,6 +192,9 @@
           _hp:      form.querySelector('[name="_hp"]').value
         };
 
+        // Attribution ids so the Apps Script can report the lead server-side.
+        if (window.CRDLead) Object.assign(payload, window.CRDLead.context());
+
         // Basic required field check
         if (!payload.name || !payload.email || !payload.message) {
           showError('Please fill in your name, email and message.');
@@ -207,10 +210,13 @@
         fetch(SCRIPT_URL, {
           method:  'POST',
           mode:    'no-cors',
+          keepalive: true,
           headers: { 'Content-Type': 'text/plain' },
           body:    JSON.stringify(payload)
         })
         .then(function () {
+          // Real URL so Google can see the lead; the page fires the conversion.
+          if (window.CRDLead) { window.CRDLead.complete(); return; }
           form.style.display = 'none';
           successEl.style.display = 'block';
         })

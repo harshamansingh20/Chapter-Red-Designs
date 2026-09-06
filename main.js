@@ -12,40 +12,272 @@
   const $ = (sel, root = document) => root.querySelector(sel);
 
   /* ── Intro animation ─────────────────────────────────────────────────── */
-  function initIntro() {
-    const SEEN_KEY = "cr-intro-seen";
-    const overlay = $("#intro-overlay");
-    const root = $("#site-root");
+  /* The R draws itself on, then breaks into the same dust the hero uses.
+     The reveal is driven by a geodesic distance field: distance measured
+     *through* the glyph from the tail, so the front travels along the stroke
+     and rounds the bowl instead of sweeping across it. */
 
+  // The authentic monogram, lifted from brand/logo-footer.svg. (vector.png is a
+  // favicon crop — its edges are clipped, so it is not usable as the outline.)
+  var R_PATH = "M1459.27,1085.41c-12.93,0-28.52-1.45-42.04-12.05-13.77-10.79-20.89-26.71-19.53-43.69,1.5-18.77,13.17-36.36,30.44-45.91,12.91-7.13,26.47-9.7,38.44-11.96,6.99-1.32,13.59-2.57,19.09-4.54,14.33-5.14,27.83-16.58,31.41-26.61,1.52-4.26,1.09-7.87-1.43-12.07-8.24-13.72-32.05-20.14-49.11-17.53-31.8,4.86-46.46,31.05-66.83,73.61-10.09,21.08-20.51,42.87-35.53,60.94-18.64,22.42-41,35.04-68.37,38.57l-5.75-44.5c33.39-4.31,48.41-30.98,69.18-74.38,20.14-42.09,42.97-89.81,100.53-98.6,32.33-4.94,75.13,6.79,94.34,38.78,9.51,15.82,11.32,33.2,5.23,50.25-9.9,27.74-37.71,46.3-58.52,53.76-8.84,3.17-17.52,4.81-25.91,6.4-9.49,1.8-18.46,3.49-25.08,7.15-4.74,2.62-7.17,7.13-7.41,10.22-.13,1.65.24,3.03,2.48,4.79,3.58,2.8,12.3,2.6,20.73,2.4,2.27-.05,4.51-.1,6.7-.11,12.78-.04,25.81-.23,38.4-.41,14.3-.21,29.08-.42,43.75-.42v44.87c-14.35,0-28.96.21-43.1.42-12.72.19-25.88.38-38.92.42-1.89,0-3.82.05-5.78.1-2.34.05-4.83.11-7.42.11Z";
+  var R_RED = "#E31F2E";
+
+  function pathBBox(d) {
+    // Exact bounds straight from the path, so the fit never depends on probing.
+    var svg = document.createElementNS("http://www.w3.org/2000/svg", "svg");
+    svg.setAttribute("viewBox", "0 0 1 1");
+    svg.style.cssText = "position:absolute;left:-9999px;width:10px;height:10px";
+    var pe = document.createElementNS("http://www.w3.org/2000/svg", "path");
+    pe.setAttribute("d", d);
+    svg.appendChild(pe); document.body.appendChild(svg);
+    var b = pe.getBBox(); svg.remove();
+    return b;
+  }
+
+  function buildMark(size) {
+    // Rasterise the glyph, then flood a geodesic distance out from its tail.
+    var pad = Math.round(size * 0.06);
+    var c = document.createElement("canvas");
+    c.width = c.height = size;
+    var x = c.getContext("2d", { willReadFrequently: true });
+    var b = pathBBox(R_PATH);
+    var k = Math.min((size - pad * 2) / b.width, (size - pad * 2) / b.height);
+    x.save();
+    x.translate((size - b.width * k) / 2 - b.x * k, (size - b.height * k) / 2 - b.y * k);
+    x.scale(k, k);
+    x.fill(new Path2D(R_PATH));
+    x.restore();
+
+    var alpha = x.getImageData(0, 0, size, size).data;
+    var inside = new Uint8Array(size * size);
+    for (var j = 0; j < size * size; j++) if (alpha[j * 4 + 3] > 128) inside[j] = 1;
+
+    // Start at the bottom-left tail — where the showreel's stroke begins.
+    var start = -1, best = -1e9;
+    for (var m = 0; m < size * size; m++) {
+      if (!inside[m]) continue;
+      var score = ((m / size) | 0) - (m % size);
+      if (score > best) { best = score; start = m; }
+    }
+    if (start < 0) return null;
+
+    // BFS = geodesic distance measured through the glyph, so the reveal front
+    // follows the stroke and rounds the bowl instead of sweeping across it.
+    var dist = new Float32Array(size * size).fill(-1);
+    var q = new Int32Array(size * size), head = 0, tail = 0, maxD = 0;
+    dist[start] = 0; q[tail++] = start;
+    while (head < tail) {
+      var cur = q[head++], cx = cur % size, cy = (cur / size) | 0, cd = dist[cur];
+      if (cd > maxD) maxD = cd;
+      for (var dy = -1; dy <= 1; dy++) for (var dx = -1; dx <= 1; dx++) {
+        if (!dx && !dy) continue;
+        var nx = cx + dx, ny = cy + dy;
+        if (nx < 0 || ny < 0 || nx >= size || ny >= size) continue;
+        var n = ny * size + nx;
+        if (!inside[n] || dist[n] >= 0) continue;
+        dist[n] = cd + (dx && dy ? 1.414 : 1);
+        q[tail++] = n;
+      }
+    }
+    return { size: size, inside: inside, dist: dist, maxD: maxD || 1 };
+  }
+
+  function initIntro() {
+    var SEEN_KEY = "cr-intro-seen";
+    var overlay = $("#intro-overlay");
+    var root = $("#site-root");
     if (!overlay || !root) return;
 
-    if (sessionStorage.getItem(SEEN_KEY)) {
+    var skip = sessionStorage.getItem(SEEN_KEY) ||
+      window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+    if (skip) {
       overlay.remove();
       root.classList.add("instant", "reveal-now");
-      initHero();
+      revealSite();
       return;
     }
-
-    const logo  = $("#intro-logo",  overlay);
-    const sweep = $("#intro-sweep", overlay);
-
     sessionStorage.setItem(SEEN_KEY, "1");
+    root.classList.add("instant", "reveal-now");
 
-    // phase 1 — logo fades + scales in
-    setTimeout(() => logo  && logo.classList.add("show"),  400);
-    // phase 2 — red floods up from bottom
-    setTimeout(() => sweep && sweep.classList.add("flood"), 1800);
-    // phase 3 — overlay slides up; simultaneously trigger hero fade-in
-    setTimeout(() => {
-      overlay.classList.add("exit");
-      initHero();
-    }, 2500);
-    // phase 4 — reveal site, remove overlay
-    setTimeout(() => {
-      root.classList.add("reveal-now");
-      overlay.remove();
-    }, 3150);
+    var revealed = false;
+    function finish(animated) {
+      if (revealed) return;
+      revealed = true;
+      revealSite();
+      if (!animated) { overlay.remove(); return; }
+      setTimeout(function () { overlay.classList.add("exit"); }, 140);
+      setTimeout(function () { overlay.remove(); }, 760);
+    }
+
+    var canvas = $("#intro-canvas", overlay);
+    var ctx = canvas && canvas.getContext("2d");
+    // Any failure below must still let the site through — never trap the visitor.
+    if (!ctx || typeof Path2D !== "function") { finish(false); return; }
+    var mark = buildMark(190);
+    if (!mark) { finish(false); return; }
+
+    var GRID = mark.size;
+    var dpr = Math.min(window.devicePixelRatio || 1, 2);
+    var vw = overlay.clientWidth, vh = overlay.clientHeight;
+    canvas.width = vw * dpr; canvas.height = vh * dpr;
+    ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+
+    // ~16% of viewport width on desktop, ~30% on a phone.
+    var markW = Math.min(vw * 0.3, vh * 0.24, 340);
+    var ox = (vw - markW) / 2, oy = (vh - markW) / 2;
+
+    // When each cell stops being glyph and becomes dust — in draw order, so the
+    // R erodes the same way it was written.
+    var melt = new Float32Array(GRID * GRID);
+    for (var i = 0; i < GRID * GRID; i++) {
+      if (!mark.inside[i]) continue;
+      var n = ((Math.imul(i, 2654435761) >>> 0) / 4294967296);
+      melt[i] = (mark.dist[i] / mark.maxD) * 0.5 + n * 0.25;
+    }
+
+    // Dust in the hero field's own vocabulary, so the handoff is seamless.
+    var DUST = "#121212", ACCENT = "#E42222", ACCENT_RATIO = 0.1;
+    var parts = [];
+    for (var j = 0; j < GRID * GRID; j++) {
+      if (!mark.inside[j] || Math.random() > 0.03) continue;
+      var accent = Math.random() < ACCENT_RATIO;
+      var ang = Math.random() * Math.PI * 2;
+      parts.push({
+        x: ox + (j % GRID) / GRID * markW,
+        y: oy + ((j / GRID) | 0) / GRID * markW,
+        vx: Math.cos(ang) * (0.3 + Math.random() * 0.6),
+        vy: -(0.4 + Math.random() * 0.9),
+        r: accent ? 1.1 + Math.random() * 1.3 : 0.6 + Math.random() * 1.1,
+        col: accent ? ACCENT : DUST,
+        delay: melt[j]
+      });
+    }
+
+    // Mask canvas at field resolution; the glyph itself stays true vector.
+    var maskC = document.createElement("canvas");
+    maskC.width = maskC.height = GRID;
+    var maskX = maskC.getContext("2d");
+    var maskImg = maskX.createImageData(GRID, GRID);
+    var glyph = document.createElement("canvas");
+    glyph.width = glyph.height = Math.round(markW * dpr);
+    var gx = glyph.getContext("2d");
+    var bbox = pathBBox(R_PATH);
+    var pad = markW * dpr * 0.06;
+    var gk = Math.min((glyph.width - pad * 2) / bbox.width, (glyph.height - pad * 2) / bbox.height);
+
+    function paintGlyph(keep) {
+      // keep(i) -> is this cell still solid?
+      var px = maskImg.data;
+      for (var i = 0; i < GRID * GRID; i++) px[i * 4 + 3] = keep(i) ? 255 : 0;
+      maskX.putImageData(maskImg, 0, 0);
+      gx.setTransform(1, 0, 0, 1, 0, 0);
+      gx.clearRect(0, 0, glyph.width, glyph.height);
+      gx.save();
+      gx.translate((glyph.width - bbox.width * gk) / 2 - bbox.x * gk,
+                   (glyph.height - bbox.height * gk) / 2 - bbox.y * gk);
+      gx.scale(gk, gk);
+      gx.fillStyle = R_RED;
+      gx.fill(new Path2D(R_PATH));       // crisp vector edge
+      gx.restore();
+      gx.globalCompositeOperation = "destination-in";
+      gx.drawImage(maskC, 0, 0, glyph.width, glyph.height);
+      gx.globalCompositeOperation = "source-over";
+      ctx.drawImage(glyph, ox, oy, markW, markW);
+    }
+
+    var DRAW = 1300, HOLD = 350, MELT = 1150;
+    var t0 = null;
+
+    function frame(now) {
+      if (t0 === null) t0 = now;
+      var t = now - t0;
+      ctx.clearRect(0, 0, vw, vh);
+
+      if (t < DRAW + HOLD) {
+        var prog = Math.min(1, t / DRAW);
+        var front = easeInOut(prog) * mark.maxD;
+        paintGlyph(function (i) { return mark.inside[i] && mark.dist[i] <= front; });
+      } else {
+        var mt = Math.min(1, (t - DRAW - HOLD) / MELT);
+        paintGlyph(function (i) { return mark.inside[i] && melt[i] > mt; });
+        for (var k = 0; k < parts.length; k++) {
+          var p = parts[k];
+          var pt = (mt - p.delay) / (1 - p.delay);
+          if (pt <= 0 || pt >= 1) continue;
+          var travel = pt * 95;
+          ctx.globalAlpha = 1 - pt;
+          // Red at the break, settling into the hero's dust colours.
+          ctx.fillStyle = pt < 0.3 ? R_RED : p.col;
+          ctx.beginPath();
+          ctx.arc(p.x + p.vx * travel, p.y + p.vy * travel, p.r, 0, Math.PI * 2);
+          ctx.fill();
+        }
+        ctx.globalAlpha = 1;
+        if (mt > 0.4) finish(true);
+        if (mt >= 1) return;
+      }
+      requestAnimationFrame(frame);
+    }
+    requestAnimationFrame(frame);
+
+    // Hard stop: rAF never runs in a background tab, so release the site anyway.
+    setTimeout(function () { finish(true); }, DRAW + HOLD + MELT + 900);
   }
+
+  /* ── Lead tracking helpers ────────────────────────────────────────────── */
+  /* Shared by the contact form and the book-a-call form. Captures Google Ads
+     click ids on landing (they only appear on the first URL) and reads the GA4
+     cookies so the server can attribute its conversion to the same session. */
+  var ADS_KEY = "cr-ads-click";
+
+  function captureAdsClickId() {
+    try {
+      var q = new URLSearchParams(window.location.search);
+      var found = null;
+      ["gclid", "gbraid", "wbraid"].forEach(function (k) {
+        var v = q.get(k);
+        if (v && !found) found = { key: k, value: v, at: Date.now() };
+      });
+      if (found) localStorage.setItem(ADS_KEY, JSON.stringify(found));
+    } catch (e) { /* private mode / blocked storage — tracking is best-effort */ }
+  }
+
+  function cookie(name) {
+    var m = document.cookie.match("(^|;)\\s*" + name + "\\s*=\\s*([^;]+)");
+    return m ? m.pop() : "";
+  }
+
+  window.CRDLead = {
+    // Identifiers the Apps Script needs to report the conversion server-side.
+    context: function () {
+      var out = {};
+      // _ga cookie: GA1.1.<client_id part 1>.<part 2>
+      var ga = cookie("_ga").split(".");
+      if (ga.length >= 4) out.client_id = ga[2] + "." + ga[3];
+      // _ga_<stream>. Older format: GS1.1.<session_id>.<n>...
+      // Newer format:      GS2.1.s<session_id>$o1$g1$t...  — strip the s and the $ fields.
+      var gs = cookie("_ga_K160Y2YJJE").split(".");
+      if (gs.length >= 3) {
+        var sid = gs[2].replace(/^s/, "").split("$")[0];
+        if (/^\d+$/.test(sid)) out.session_id = sid;
+      }
+      try {
+        var ads = JSON.parse(localStorage.getItem(ADS_KEY) || "null");
+        // Ads click ids are only useful for ~90 days.
+        if (ads && Date.now() - ads.at < 90 * 864e5) {
+          out.ads_click_key = ads.key;
+          out.ads_click_id = ads.value;
+        }
+      } catch (e) { /* ignore */ }
+      out.page = window.location.pathname;
+      return out;
+    },
+    // Mark this visitor as having genuinely just submitted, then hand off.
+    complete: function () {
+      try { sessionStorage.setItem("cr-lead-pending", "1"); } catch (e) {}
+      window.location.href = "thank-you.html";
+    }
+  };
 
   /* ── Navbar scroll state ──────────────────────────────────────────────── */
   function initNavbar() {
@@ -56,9 +288,9 @@
     onScroll();
   }
 
-  /* ── Hero entrance animation ──────────────────────────────────────────── */
-  function initHero() {
-    document.querySelectorAll(".hero-anim").forEach((el) => el.classList.add("play"));
+  /* ── Hero + navbar entrance animation ─────────────────────────────────── */
+  function revealSite() {
+    document.querySelectorAll(".hero-anim, .nav-expand").forEach((el) => el.classList.add("play"));
   }
 
   /* ── Dust field ───────────────────────────────────────────────────────── */
@@ -155,26 +387,27 @@
     const container = $("#showreel");
     const frame = $("#showreel-frame");
     if (!container || !frame) return;
-    if (window.innerWidth < 768) return;
 
-    let current = 0, target = 0;
+    if (window.innerWidth >= 768) {
+      let current = 0, target = 0;
 
-    function measure() {
-      const vh = window.innerHeight;
-      const rect = container.getBoundingClientRect();
-      const travel = vh;
-      target = clamp((vh - rect.top) / travel, 0, 1);
+      function measure() {
+        const vh = window.innerHeight;
+        const rect = container.getBoundingClientRect();
+        const travel = vh;
+        target = clamp((vh - rect.top) / travel, 0, 1);
+      }
+      function render() {
+        current += (target - current) * 0.12;
+        const scale = lerp(0.30, 0.85, current);
+        frame.style.transform = "scale(" + scale + ")";
+        requestAnimationFrame(render);
+      }
+      window.addEventListener("scroll", measure, { passive: true });
+      window.addEventListener("resize", measure);
+      measure();
+      render();
     }
-    function render() {
-      current += (target - current) * 0.12;
-      const scale = lerp(0.30, 0.85, current);
-      frame.style.transform = "scale(" + scale + ")";
-      requestAnimationFrame(render);
-    }
-    window.addEventListener("scroll", measure, { passive: true });
-    window.addEventListener("resize", measure);
-    measure();
-    render();
 
     // Controls
     const video = document.getElementById("showreel-video");
@@ -191,8 +424,11 @@
       muteBtn.querySelector(".sr-icon--muted").style.display = video.muted ? "block" : "none";
     }
 
+    let pausedByUser = false;
+
     playBtn.addEventListener("click", function() {
-      video.paused ? video.play() : video.pause();
+      if (video.paused) { pausedByUser = false; video.play(); }
+      else { pausedByUser = true; video.pause(); }
       syncPlay();
     });
     muteBtn.addEventListener("click", function() {
@@ -204,61 +440,19 @@
     video.addEventListener("pause", syncPlay);
     syncPlay();
     syncMute();
-  }
 
-  /* ── Why (scroll-highlight text) ──────────────────────────────────────── */
-  function initWhy() {
-    const container = $("#why");
-    const p = $("#why-text");
-    if (!container || !p) return;
-    const openQ = $(".why-q-open");
-    const closeQ = $(".why-q-close");
-    const attribution = $(".why-attribution");
-
-    const text = "Brands are a lot like people. Looks get you attention, but character is what earns trust. Your brand needs both and that's why it is so important to shape your brand's character before designing its identity.";
-    const words = text.split(" ");
-    const spans = words.map((w) => {
-      const s = document.createElement("span");
-      s.className = "word";
-      s.textContent = w + " ";
-      p.appendChild(s);
-      return s;
-    });
-
-    // On mobile: show everything at full opacity, no scroll animation
-    if (window.innerWidth < 768) {
-      spans.forEach((s) => { s.style.opacity = "1"; s.style.color = "#121212"; });
-      if (openQ) openQ.style.opacity = "1";
-      if (closeQ) closeQ.style.opacity = "1";
-      if (attribution) attribution.style.opacity = "1";
-      return;
+    // Pause when scrolled out of view, resume when back (unless the user paused it)
+    if ("IntersectionObserver" in window) {
+      new IntersectionObserver(function(entries) {
+        entries.forEach(function(entry) {
+          if (entry.isIntersecting) {
+            if (!pausedByUser) { var p = video.play(); if (p) p.catch(function() {}); }
+          } else if (!video.paused) {
+            video.pause();
+          }
+        });
+      }, { threshold: 0.35 }).observe(video);
     }
-
-    const gray = [161, 161, 161], dark = [18, 18, 18];
-    function update() {
-      const vh = window.innerHeight;
-      const rect = container.getBoundingClientRect();
-      // prog: 0 when sticky locks in (rect.top=0), 1 when track bottom hits viewport bottom
-      const prog = clamp(-rect.top / (container.offsetHeight - vh), 0, 1);
-      const n = spans.length;
-      spans.forEach((s, i) => {
-        const start = i / n, end = (i + 1) / n;
-        const wp = clamp((prog - start) / (end - start), 0, 1);
-        s.style.opacity = (0.15 + 0.85 * wp).toString();
-        const c = gray.map((g, k) => Math.round(lerp(g, dark[k], wp)));
-        s.style.color = "rgb(" + c[0] + "," + c[1] + "," + c[2] + ")";
-      });
-      // Open quote: reveal in first 15% of scroll
-      const openP = clamp(prog / 0.15, 0, 1);
-      if (openQ) openQ.style.opacity = (0.15 + 0.85 * openP).toString();
-      // Close quote + attribution: reveal in last 15% of scroll
-      const closeP = clamp((prog - 0.85) / 0.15, 0, 1);
-      if (closeQ) closeQ.style.opacity = (0.15 + 0.85 * closeP).toString();
-      if (attribution) attribution.style.opacity = (0.15 + 0.85 * closeP).toString();
-    }
-    window.addEventListener("scroll", update, { passive: true });
-    window.addEventListener("resize", update);
-    update();
   }
 
   /* ── Selected work ────────────────────────────────────────────────────── */
@@ -267,7 +461,7 @@
     { name: "GoPhrasing",     img: "work/go-phrasing/drive-download-20260731T172209Z-1-001/GoPhrasing-App-Icon-Mob-Mockup.png", href: "work/go-phrasing/index.html" },
     { name: "Pink Tiger",     img: "work/pink-tiger/drive-download-20260731T075215Z-1-001/Pink-Tiger-Brand-identity-Logo-Mockup.png", href: "work/pink-tiger/index.html" },
     { name: "Curious Gigglers", img: "work/curious-gigglers/drive-download-20260731T062340Z-1-001/Curious-Gigglers-Logo-Mockup_.png", href: "work/curious-gigglers/index.html" },
-    { name: "Baking Diaries", img: "brand/Baking-Diaries-kurseong.png", href: "#" },
+    { name: "Baking Diaries", img: "brand/Baking-Diaries-kurseong.png", href: "work/baking-diaries/index.html" },
     { name: "Cleaon",         img: "brand/Cleaon-Care.png",             href: "#" },
   ];
   const STACK = [
@@ -397,52 +591,71 @@
   function initServices() {
     const container = $("#services-container");
     if (!container) return;
-    const mobile = window.innerWidth < 768;
-    const CARD_H = 380;
-    if (!mobile) container.style.height = (CARD_H * SERVICES.length + 400) + "px";
-    SERVICES.forEach((svc) => {
-      const image = '<div class="service-image"><img src="' + svc.img + '" alt="' + svc.category + '" loading="lazy" /></div>';
-      const text =
-        '<div class="service-text ' + (svc.dark ? "dark" : "light") + '">' +
-          "<h3>" + svc.category + "</h3>" +
-          '<p class="service-sub">' + svc.heading + "</p>" +
-          '<p class="service-body">' + svc.desc + "</p>" +
-        "</div>";
-      const card = document.createElement("div");
-      card.className = "service-card";
-      if (!mobile) card.style.height = CARD_H + "px";
-      card.innerHTML = svc.flip ? image + text : text + image;
-      container.appendChild(card);
-    });
+    const row = document.createElement("div");
+    row.className = "svc-row";
+    // Open/closed is pure CSS (first card open, hover swaps) — no JS state to desync.
+    row.innerHTML = SERVICES.map((svc) =>
+      '<article class="svc-card">' +
+        '<div class="svc-media"><img src="' + svc.img + '" alt="' + svc.category + '" loading="lazy" /></div>' +
+        '<div class="svc-num">' + svc.num + ".</div>" +
+        '<div class="svc-inner">' +
+          '<p class="svc-label">' + svc.category + "</p>" +
+          '<div class="svc-reveal"><div class="svc-reveal-in">' +
+            '<h3 class="svc-heading">' + svc.heading + "</h3>" +
+            '<p class="svc-desc">' + svc.desc + "</p>" +
+          "</div></div>" +
+        "</div>" +
+      "</article>"
+    ).join("");
+    container.appendChild(row);
   }
 
   /* ── Reviews ──────────────────────────────────────────────────────────── */
   const REVIEWS = [
-    { rating: "5.0", name: "Nimisha Modi", role: "Founder, Bohemian Alley", quote: "Jasgul did an amazing job of making my vision come to life." },
-    { rating: "5.0", name: "Bhawna Gupta", role: "Founder, NoFuss Foodworks", quote: "I had a great experience working with Chapter Red Designs." },
-    { rating: "5.0", name: "Anamika Mahajan", role: "Founder, Zenith School Of Foreign Languages", quote: "What stood out most about this agency was their ability to deeply understand my vision." },
-    { rating: "4.5", name: "Manny Dhir", role: "CEO, Xtreme Security Inc", quote: "Their responsiveness to our needs was impressive; they were always quick to address any changes or feedback." },
+    { name: "Mohita Mathur", role: "Founder — Mo\u2019s Bakery", quote: "I have worked with Jasgul for over 2 years now and she is a very versatile and dynamic designer. She has not only designed our product packaging but has also helped us shape our brands personality by constantly working with us in refining it. She has a humble personality and is able to understand the requirements of the marketing team and brand owner well." },
+    { name: "Sonal Bangia", role: "Co-Founder — The Brand Palette", quote: "Jasgul is one of the most talented thinkers and creative designers that I have met. Her sense of design is exceptional and she is extremely responsible about her work. She has grown exponentially in the last few years and I am looking forward to staying associated with her in the future." },
+    { name: "Anamika Mahajan", role: "GoPhrasing & Zenith SFI", quote: "What stood out most about this agency was their ability to deeply understand my vision \u2014 even when I struggled to articulate it clearly. They asked the right questions, listened attentively, and took time to truly understand my brand\u2019s mission and personality. What impressed me was not just their technical skill, but their ability to translate abstract ideas into visual language that felt authentic, modern, and aligned with my goals." },
+    { name: "Manish Dhir", role: "", quote: "Their responsiveness to our needs was impressive; they were always quick to address any changes or feedback." },
+    { name: "Nimisha Modi", role: "Bohemian Alley", quote: "I had a wonderful time working on my rebrand with Chapter Red. Jasgul did an amazing job of making my vision come to life. She was extremely accomodating and understanding all throughout the process. The entire journey felt like a cake walk!" },
+    { name: "Bhawna Gupta", role: "", quote: "I had a great experience working with Chapter Red Designs. I wanted minimal, product-focused packaging and they nailed it. Highly recommend CRD for anyone seeking a thoughtful, supportive design team." },
   ];
   function initReviews() {
-    const grid = $("#reviews-grid");
-    if (!grid) return;
-    const starFull = '<svg width="26" height="26" viewBox="0 0 24 24" fill="#E42222"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>';
-    const starHalf = '<svg width="26" height="26" viewBox="0 0 24 24"><defs><linearGradient id="hg"><stop offset="50%" stop-color="#E42222"/><stop offset="50%" stop-color="#D0D0D0"/></linearGradient></defs><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2" fill="url(#hg)"/></svg>';
-    function renderStars(rating) {
-      const val = parseFloat(rating);
-      const full = Math.floor(val);
-      const half = val % 1 >= 0.5 ? 1 : 0;
-      return starFull.repeat(full) + (half ? starHalf : '');
-    }
-    grid.innerHTML = REVIEWS.map((r, i) =>
-      '<div class="review-card reveal" style="transition-delay:' + (i * 0.08) + 's">' +
-        '<div class="review-stars">' + renderStars(r.rating) + "</div>" +
-        '<p class="review-text">&ldquo;' + r.quote + "&rdquo;</p>" +
-        '<div class="review-foot">' +
-          '<div class="info"><p class="name">' + r.name + '</p><p class="role">' + r.role + "</p></div>" +
-        "</div>" +
-      "</div>"
+    const track = $("#reviews-grid");
+    if (!track) return;
+    const star =
+      '<svg class="rv-star" width="20" height="20" viewBox="0 0 24 24" aria-hidden="true">' +
+        '<rect width="24" height="24" rx="1" fill="#00B67A"/>' +
+        '<polygon fill="#fff" points="12,4.2 14.41,9.08 19.8,9.87 15.9,13.67 16.82,19.06 12,16.5 7.18,19.06 8.1,13.67 4.2,9.87 9.59,9.08"/>' +
+      "</svg>";
+    track.innerHTML = REVIEWS.map((r) =>
+      '<article class="rv-card">' +
+        '<div class="rv-stars" role="img" aria-label="5 out of 5 stars">' + star.repeat(5) + "</div>" +
+        '<p class="rv-name">' + r.name + (r.role ? '<span class="rv-role">' + r.role + "</span>" : "") + "</p>" +
+        '<p class="rv-quote">' + r.quote + "</p>" +
+      "</article>"
     ).join("");
+
+    const prev = $("#rv-prev"), next = $("#rv-next");
+    if (!prev || !next) return;
+    // Scroll by one card, measured from the DOM so it survives any re-styling.
+    function step() {
+      const card = track.querySelector(".rv-card");
+      if (!card) return track.clientWidth;
+      const gap = parseFloat(getComputedStyle(track).columnGap) || 0;
+      return card.getBoundingClientRect().width + gap;
+    }
+    function sync() {
+      // Tolerance: scroll snapping and sub-pixel widths leave a few px at each end.
+      const EPS = 4;
+      const max = track.scrollWidth - track.clientWidth;
+      prev.disabled = track.scrollLeft <= EPS;
+      next.disabled = track.scrollLeft >= max - EPS;
+    }
+    prev.addEventListener("click", () => track.scrollBy({ left: -step(), behavior: "smooth" }));
+    next.addEventListener("click", () => track.scrollBy({ left: step(), behavior: "smooth" }));
+    track.addEventListener("scroll", sync, { passive: true });
+    window.addEventListener("resize", sync);
+    sync();
   }
 
   /* ── Team ─────────────────────────────────────────────────────────────── */
@@ -543,9 +756,14 @@
     if (linksContainer) {
       document.querySelectorAll(".navbar-nav .navbar-link").forEach((link) => {
         const a = document.createElement("a");
-        a.href = link.href;
         a.textContent = link.textContent.trim();
-        a.className = "mobile-nav-link";
+        if (link.classList.contains("navbar-link--disabled")) {
+          a.className = "mobile-nav-link mobile-nav-link--disabled";
+          a.setAttribute("aria-disabled", "true");
+        } else {
+          a.href = link.href;
+          a.className = "mobile-nav-link";
+        }
         linksContainer.appendChild(a);
       });
     }
@@ -578,12 +796,12 @@
 
   /* ── Boot ─────────────────────────────────────────────────────────────── */
   document.addEventListener("DOMContentLoaded", () => {
-    initIntro();   // calls initHero() at the right moment internally
+    captureAdsClickId();  // must run before the visitor navigates away from the ad URL
+    initIntro();   // calls revealSite() at the right moment internally
     initNavbar();
     initMobileNav();
     initDustField();
     initShowreel();
-    initWhy();
     initSelectedWork();
     initProcess();
     initServices();

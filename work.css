@@ -37,9 +37,12 @@
 .pk-photo--edge, .pk-photo--craft { width: 100%; }
 .pk-row > .pk-photo { width: 100%; }
 @media (min-width: 768px) {
-  .pk-photo--edge { width: 46%; flex-shrink: 0; }
-  .pk-photo--craft { flex: 1; }
-  .pk-row > .pk-photo { flex: 1 1 0; width: 0; min-width: 0; }
+  /* min-width:0 + max-width:100% — a flex item defaults to min-width:auto, which
+     floors it at the image's intrinsic width and pushes it past the page margin.
+     These two keep every side-by-side photo inside the content column. */
+  .pk-photo--edge { width: 46%; flex-shrink: 0; min-width: 0; max-width: 46%; }
+  .pk-photo--craft { flex: 1 1 0; min-width: 0; max-width: 100%; }
+  .pk-row > .pk-photo { flex: 1 1 0; width: 0; min-width: 0; max-width: 100%; }
 }
 
 /* Placeholder images */
@@ -144,6 +147,10 @@
   .pk-row { flex-direction: row; }
   .pk-row--3 { gap: 50px; }
   .pk-row--2 { gap: 100px; }
+  /* Paired-row images stretch to a shared height; object-fit:cover makes the
+     shorter one crop to fill instead of distorting. Pages tune the exact frame
+     ratio per row where the two source images differ a lot. */
+  .pk-row > .pk-photo { object-fit: cover; }
 }
 
 /* ── CTA Strip ── */

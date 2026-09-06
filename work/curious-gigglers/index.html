@@ -35,17 +35,16 @@
       .pk-craft { gap: 200px; }
     }
     /* Full-width landscape images */
-    .pk-wrap > .pk-photo,
-    .pk-gallery > .pk-photo,
-    .pk-photo.pk-mt-hero {
-      aspect-ratio: 4 / 3;
-      object-fit: cover;
-    }
-    @media (min-width: 768px) {
+    /* Mobile & tablet: full-width photos show at their true proportions -
+       no aspect-ratio frame, no cover-crop, so nothing is sliced off the edges.
+       Desktop: a consistent 5:3 frame (every hero is already exactly this ratio,
+       so heroes never crop; other images clip only a few %). */
+    @media (min-width: 1024px) {
       .pk-wrap > .pk-photo,
       .pk-gallery > .pk-photo,
       .pk-photo.pk-mt-hero {
         aspect-ratio: 1300 / 780;
+        object-fit: cover;
       }
     }
   </style>
@@ -60,7 +59,7 @@
           <a class="navbar-link" href="../../index.html">HOME</a>
           <a class="navbar-link" href="../../index.html#services">SERVICES</a>
           <a class="navbar-link" href="../index.html">WORK</a>
-          <a class="navbar-link" href="../../index.html#about">ABOUT</a>
+          <a class="navbar-link navbar-link--disabled" aria-disabled="true" title="Coming soon">ABOUT</a>
           <a class="navbar-link" href="#">INSIGHTS</a>
         </nav>
         <a href="../../book-a-call.html" class="btn-call">
@@ -211,7 +210,7 @@
       <!-- Identity system bridge images -->
       <img class="pk-photo pk-mt-103" src="drive-download-20260731T062340Z-1-001/Curious-Gigglers-Logo-Mascot-Exploration_.png" alt="Curious Gigglers mascot and logo exploration process" loading="lazy" />
       <img class="pk-photo pk-mt-103" src="drive-download-20260731T062340Z-1-001/Curious-Gigglers-Brand-identity-logo.png" alt="Preschool logo design and branding" loading="lazy" />
-      <img class="pk-photo pk-mt-103" src="drive-download-20260731T062340Z-1-001/Curious-Gigglers-Brand-identity-Colour-pallet_.png" alt="Curious Gigglers brand colour palette" loading="lazy" />
+      <img class="pk-photo pk-mt-103" src="drive-download-20260731T062340Z-1-001/Curious-Gigglers-Brand-identity-Colour-pallet_ .png" alt="Curious Gigglers brand colour palette" loading="lazy" />
       <div class="pk-row pk-mt-103 pk-row--2">
         <img class="pk-photo" src="drive-download-20260731T062340Z-1-001/Curious-Gigglers-Brand-identity-Typo1.png" alt="Curious Gigglers brand typography — primary typeface" loading="lazy" />
         <img class="pk-photo" src="drive-download-20260731T062340Z-1-001/Curious-Gigglers-Brand-identity-typo2.png" alt="Curious Gigglers brand typography — secondary typeface" loading="lazy" />

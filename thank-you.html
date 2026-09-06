@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html lang="en" class="antialiased">
+<head>
+  <meta charset="UTF-8" />
+  <!-- Google tag (gtag.js) -->
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-K160Y2YJJE"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+    gtag('config', 'G-K160Y2YJJE');
+  </script>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <!-- Must never be indexed: it would show up in search as a landing page. -->
+  <meta name="robots" content="noindex, nofollow" />
+  <title>Thank You | Chapter Red</title>
+  <link rel="icon" href="vector.png" />
+  <link rel="stylesheet" href="styles.css" />
+  <style>
+    .ty-wrap {
+      min-height: 100vh;
+      background: #F0F0F0;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      text-align: center;
+      padding: 2rem 1.5rem;
+    }
+    .ty-logo { width: 4.5rem; height: auto; margin-bottom: 2.5rem; }
+    .ty-wrap h1 {
+      font-size: clamp(28px, 4vw, 48px);
+      font-weight: 700;
+      letter-spacing: -0.03em;
+      line-height: 1.1;
+      color: #121212;
+      margin-bottom: 1rem;
+    }
+    .ty-wrap h1 .red { color: var(--red); }
+    .ty-sub {
+      font-size: clamp(15px, 1.4vw, 17px);
+      line-height: 1.65;
+      color: #4F4F4F;
+      max-width: 30rem;
+      margin: 0 auto 2.5rem;
+    }
+    .ty-note {
+      font-size: 0.75rem;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      color: #A1A1A1;
+      font-family: 'Aspekta', sans-serif;
+    }
+    .ty-note a { color: #121212; text-decoration: underline; }
+  </style>
+</head>
+<body>
+  <div class="ty-wrap">
+    <img class="ty-logo" src="vector.png" alt="Chapter Red" />
+    <h1>Thank you. <span class="red">We&rsquo;ve got your message.</span></h1>
+    <p class="ty-sub">
+      We&rsquo;ll review your enquiry and get back to you within 24 hours.
+      In the meantime, your next chapter is already in motion.
+    </p>
+    <p class="ty-note" id="ty-note">
+      Returning to the homepage&hellip; <a href="index.html">Go now</a>
+    </p>
+  </div>
+
+  <script>
+    (function () {
+      // Only count a conversion for a visitor who actually just submitted.
+      // Without this, a refresh or a shared/bookmarked link re-fires it.
+      var LEAD_KEY = 'cr-lead-pending';
+      var isRealLead = false;
+      try {
+        isRealLead = sessionStorage.getItem(LEAD_KEY) === '1';
+        if (isRealLead) sessionStorage.removeItem(LEAD_KEY);
+      } catch (e) { /* private mode — fall through as a normal visit */ }
+
+      if (isRealLead) {
+        gtag('event', 'generate_lead', {
+          event_category: 'contact',
+          event_label: 'contact_form',
+          value: 1
+        });
+
+        // ── Google Ads conversion ────────────────────────────────────────
+        // When you have an Ads account, paste the event snippet here. It looks
+        // like the line below, with your own AW- id and label:
+        //
+        //   gtag('event', 'conversion', { send_to: 'AW-XXXXXXXXX/AbC-D_efGh' });
+        //
+        // The Ads tag itself (gtag config for AW-XXXXXXXXX) must also be added
+        // to the <head> above, alongside the G-K160Y2YJJE config.
+        // ─────────────────────────────────────────────────────────────────
+      }
+
+      // Give the tags time to fire before navigating away. GA4 needs ~1-2s;
+      // 6s is comfortable and still feels like a confirmation, not a dead end.
+      var SECONDS = 6;
+      var note = document.getElementById('ty-note');
+      function tick() {
+        note.innerHTML = 'Returning to the homepage in ' + SECONDS +
+          '&hellip; <a href="index.html">Go now</a>';
+        if (SECONDS-- <= 0) { window.location.replace('index.html'); return; }
+        setTimeout(tick, 1000);
+      }
+      tick();
+    })();
+  </script>
+</body>
+</html>
