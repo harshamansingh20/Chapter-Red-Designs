@@ -62,7 +62,7 @@ ul { list-style: none; }
 
 /* Two-tone section heading */
 .heading-2 {
-  font-weight: 700;
+  font-weight: 800;
   line-height: 1.1;
   letter-spacing: -0.125rem;
   font-size: clamp(36px, 4.5vw, 58px);
@@ -218,7 +218,7 @@ ul { list-style: none; }
 .hero-logo { margin-bottom: 1.5rem; }
 .hero-logo img { height: 1.875rem; width: auto; margin: 0 auto; }
 .hero h1 {
-  font-weight: 700;
+  font-weight: 800;
   text-transform: uppercase;
   line-height: 0.92;
   margin-bottom: 1.25rem;
@@ -699,7 +699,7 @@ ul { list-style: none; }
 .contact-cols { display: flex; flex-direction: column; gap: 3.5rem; }
 .contact-left h2 {
   color: #121212;
-  font-weight: 700;
+  font-weight: 800;
   line-height: 1.1;
   margin-bottom: 1.25rem;
   font-size: clamp(28px, 3.2vw, 42px);
@@ -891,7 +891,7 @@ textarea.field { resize: none; line-height: 1.625; }
 
 .work-mobile { background: #F0F0F0; border-bottom: 1px solid rgba(0,0,0,0.08); padding: 3.5rem 1.5rem 4.5rem; display: none; }
 .work-mobile h2 {
-  font-size: clamp(36px, 4.5vw, 58px); font-weight: 700; line-height: 1.08;
+  font-size: clamp(36px, 4.5vw, 58px); font-weight: 800; line-height: 1.08;
   letter-spacing: -0.125rem; margin: 0 0 2.25rem;
 }
 .work-mobile-list { display: flex; flex-direction: column; gap: 0.75rem; }
@@ -1205,10 +1205,27 @@ textarea.field { resize: none; line-height: 1.625; }
     padding-top: 2rem;
     padding-bottom: 2rem;
   }
-  .hero-logo { margin-bottom: 0; }
-  .hero h1 { margin-bottom: 0; line-height: 1; white-space: normal; }
-  .hero-sub { margin-bottom: 0; font-size: 0.875rem; }
-  .hero-cta { margin-bottom: 0; flex-direction: column; align-items: center; gap: 0.75rem; width: 100%; }
+  /* Explicit margins instead of a uniform gap: the blocks need different
+     amounts of air for the h1 to read as the anchor, not one of five peers. */
+  .hero-inner { gap: 0; }
+  .hero-logo { margin-bottom: 2.5rem; }
+  .hero-logo img { height: 1.375rem; }
+  .hero h1 {
+    margin-bottom: 1rem;
+    font-size: clamp(32px, 9vw, 40px);
+    line-height: 1.02;
+    letter-spacing: -0.035em;
+    white-space: normal;
+  }
+  .hero-sub {
+    margin-bottom: 2.25rem;
+    font-size: 0.875rem;
+    line-height: 1.45;
+    max-width: 20rem;
+  }
+  .hero-cta { margin-bottom: 2.5rem; flex-direction: column; align-items: center; gap: 0.75rem; width: 100%; }
+  .hero-avatars img { width: 1.875rem; height: 1.875rem; margin-left: -0.625rem; }
+  .hero-clutch img { height: 1.75rem; }
   /* Showreel — no scale animation, flush below hero, card peeks from fold */
   .showreel { padding: 0; }
   .showreel-frame { transform: none !important; border-radius: 1.5rem; }

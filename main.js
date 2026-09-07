@@ -119,6 +119,9 @@
     var GRID = mark.size;
     var dpr = Math.min(window.devicePixelRatio || 1, 2);
     var vw = overlay.clientWidth, vh = overlay.clientHeight;
+    // A zero-size overlay (hidden tab, 0x0 viewport) would make the glyph canvas
+    // 0x0 and throw on every frame — skip straight to the site instead.
+    if (vw < 2 || vh < 2) { finish(false); return; }
     canvas.width = vw * dpr; canvas.height = vh * dpr;
     ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
 
@@ -132,21 +135,22 @@
     for (var i = 0; i < GRID * GRID; i++) {
       if (!mark.inside[i]) continue;
       var n = ((Math.imul(i, 2654435761) >>> 0) / 4294967296);
-      melt[i] = (mark.dist[i] / mark.maxD) * 0.5 + n * 0.25;
+      melt[i] = (mark.dist[i] / mark.maxD) * 0.45 + n * 0.38;
     }
 
     // Dust in the hero field's own vocabulary, so the handoff is seamless.
     var DUST = "#121212", ACCENT = "#E42222", ACCENT_RATIO = 0.1;
     var parts = [];
     for (var j = 0; j < GRID * GRID; j++) {
-      if (!mark.inside[j] || Math.random() > 0.03) continue;
+      if (!mark.inside[j] || Math.random() > 0.085) continue;
       var accent = Math.random() < ACCENT_RATIO;
       var ang = Math.random() * Math.PI * 2;
+      var spread = 0.25 + Math.random() * Math.random() * 1.9;   // a few travel far
       parts.push({
         x: ox + (j % GRID) / GRID * markW,
         y: oy + ((j / GRID) | 0) / GRID * markW,
-        vx: Math.cos(ang) * (0.3 + Math.random() * 0.6),
-        vy: -(0.4 + Math.random() * 0.9),
+        vx: Math.cos(ang) * spread,
+        vy: Math.sin(ang) * spread * 0.55 - (0.25 + Math.random() * 0.85),
         r: accent ? 1.1 + Math.random() * 1.3 : 0.6 + Math.random() * 1.1,
         col: accent ? ACCENT : DUST,
         delay: melt[j]
@@ -185,7 +189,7 @@
       ctx.drawImage(glyph, ox, oy, markW, markW);
     }
 
-    var DRAW = 1300, HOLD = 350, MELT = 1150;
+    var DRAW = 2100, HOLD = 500, MELT = 1750;
     var t0 = null;
 
     function frame(now) {
@@ -204,7 +208,7 @@
           var p = parts[k];
           var pt = (mt - p.delay) / (1 - p.delay);
           if (pt <= 0 || pt >= 1) continue;
-          var travel = pt * 95;
+          var travel = pt * 165;
           ctx.globalAlpha = 1 - pt;
           // Red at the break, settling into the hero's dust colours.
           ctx.fillStyle = pt < 0.3 ? R_RED : p.col;
@@ -612,12 +616,13 @@
 
   /* ── Reviews ──────────────────────────────────────────────────────────── */
   const REVIEWS = [
+    { name: "Chiranjeev Sandhu", role: "Cleaon Care", quote: "Chapter Red Designs\u2019 attention to detail and immersion in our project are impressive." },
     { name: "Mohita Mathur", role: "Founder — Mo\u2019s Bakery", quote: "I have worked with Jasgul for over 2 years now and she is a very versatile and dynamic designer. She has not only designed our product packaging but has also helped us shape our brands personality by constantly working with us in refining it. She has a humble personality and is able to understand the requirements of the marketing team and brand owner well." },
     { name: "Sonal Bangia", role: "Co-Founder — The Brand Palette", quote: "Jasgul is one of the most talented thinkers and creative designers that I have met. Her sense of design is exceptional and she is extremely responsible about her work. She has grown exponentially in the last few years and I am looking forward to staying associated with her in the future." },
     { name: "Anamika Mahajan", role: "GoPhrasing & Zenith SFI", quote: "What stood out most about this agency was their ability to deeply understand my vision \u2014 even when I struggled to articulate it clearly. They asked the right questions, listened attentively, and took time to truly understand my brand\u2019s mission and personality. What impressed me was not just their technical skill, but their ability to translate abstract ideas into visual language that felt authentic, modern, and aligned with my goals." },
-    { name: "Manish Dhir", role: "", quote: "Their responsiveness to our needs was impressive; they were always quick to address any changes or feedback." },
+    { name: "Manish Dhir", role: "Xtreme Security", quote: "Their responsiveness to our needs was impressive; they were always quick to address any changes or feedback." },
     { name: "Nimisha Modi", role: "Bohemian Alley", quote: "I had a wonderful time working on my rebrand with Chapter Red. Jasgul did an amazing job of making my vision come to life. She was extremely accomodating and understanding all throughout the process. The entire journey felt like a cake walk!" },
-    { name: "Bhawna Gupta", role: "", quote: "I had a great experience working with Chapter Red Designs. I wanted minimal, product-focused packaging and they nailed it. Highly recommend CRD for anyone seeking a thoughtful, supportive design team." },
+    { name: "Bhawna Gupta", role: "NoFuss Foods", quote: "I had a great experience working with Chapter Red Designs. I wanted minimal, product-focused packaging and they nailed it. Highly recommend CRD for anyone seeking a thoughtful, supportive design team." },
   ];
   function initReviews() {
     const track = $("#reviews-grid");
