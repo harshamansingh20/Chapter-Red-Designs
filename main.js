@@ -459,131 +459,115 @@
     }
   }
 
-  /* ── Selected work ────────────────────────────────────────────────────── */
-  const WORK_CARDS = [
-    { name: "Punjabi Kadhai", img: "work/punjabi-kadhai/drive-download-20260724T153409Z-1-001/punjabi-kadhai-brand-pattern.png", href: "work/punjabi-kadhai/index.html" },
-    { name: "GoPhrasing",     img: "work/go-phrasing/drive-download-20260731T172209Z-1-001/GoPhrasing-App-Icon-Mob-Mockup.png", href: "work/go-phrasing/index.html" },
-    { name: "Pink Tiger",     img: "work/pink-tiger/drive-download-20260731T075215Z-1-001/Pink-Tiger-Brand-identity-Logo-Mockup.png", href: "work/pink-tiger/index.html" },
-    { name: "Curious Gigglers", img: "work/curious-gigglers/drive-download-20260731T062340Z-1-001/Curious-Gigglers-Logo-Mockup_.png", href: "work/curious-gigglers/index.html" },
-    { name: "Baking Diaries", img: "brand/Baking-Diaries-kurseong.png", href: "work/baking-diaries/index.html" },
-    { name: "Cleaon",         img: "brand/Cleaon-Care.png",             href: "#" },
+  /* ── Featured works ───────────────────────────────────────────────────
+     Taglines are lifted from each project's own work page (its <h1
+     id="project-title">), so the card and the page it opens agree.
+     Cleaon Care has no page yet — hidden until it's ready to show. */
+  const LOREM = "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore.";
+  const WORKS = [
+    { name: "Cleaon Care", img: "brand/Cleaon-Care.png", href: "#",
+      tag: LOREM, hidden: true },
+    { name: "Punjabi Kadhai", img: "work/punjabi-kadhai/drive-download-20260724T153409Z-1-001/punjabi-kadhai-brand-pattern.png", href: "work/punjabi-kadhai/index.html",
+      tag: "A beloved Punjabi restaurant in Siliguri reintroduces itself to a new generation" },
+    { name: "GoPhrasing", img: "work/go-phrasing/drive-download-20260731T172209Z-1-001/GoPhrasing-App-Icon-Mob-Mockup.png", href: "work/go-phrasing/index.html",
+      tag: "From trusted French educator to an EdTech platform" },
+    { name: "Pink Tiger", img: "work/pink-tiger/drive-download-20260731T075215Z-1-001/Pink-Tiger-Brand-identity-Logo-Mockup.png", href: "work/pink-tiger/index.html",
+      tag: "Pink Tiger brings restaurant-quality hospitality beyond the restaurant in Vancouver" },
+    { name: "Curious Gigglers", img: "work/curious-gigglers/drive-download-20260731T062340Z-1-001/Curious-Gigglers-Logo-Mockup_.png", href: "work/curious-gigglers/index.html",
+      tag: "Shaping the future of modern preschool branding" },
+    { name: "Baking Diaries", img: "brand/Baking-Diaries-kurseong.png", href: "work/baking-diaries/index.html",
+      tag: "Reimagining the Café & Bakery Experience in Kurseong" },
   ];
-  const STACK = [
-    { x: -2, y: 0, r: -8 }, { x: -1, y: -1, r: -4 }, { x: 0, y: 0, r: -1 },
-    { x: 1, y: -1, r: 2 }, { x: 2, y: 0, r: 5 }, { x: 3, y: 1, r: 9 },
-  ];
-  const FAN = [
-    { x: -33, y: 2, r: -16 }, { x: -20, y: -2, r: -9 }, { x: -7, y: 0, r: -3 },
-    { x: 7, y: 0, r: 3 }, { x: 20, y: -2, r: 9 }, { x: 33, y: 2, r: 16 },
-  ];
-  const GRID = [
-    { x: -30, y: -9, r: 0 }, { x: 0, y: -9, r: 0 }, { x: 30, y: -9, r: 0 },
-    { x: -30, y: 23, r: 0 }, { x: 0, y: 23, r: 0 }, { x: 30, y: 23, r: 0 },
-  ];
-  const lerpPos = (a, b, t) => ({ x: lerp(a.x, b.x, t), y: lerp(a.y, b.y, t), r: lerp(a.r, b.r, t) });
 
-  function cardInner(card) {
-    const img = card.img
-      ? '<img src="' + card.img + '" alt="' + card.name + '" style="position:absolute;inset:0;width:100%;height:100%;object-fit:cover;display:block;" />'
-      : '';
-    return img + '<div class="overlay"><span>VIEW PROJECT →</span></div>';
-  }
-
-  function initSelectedWork() {
+  function initWorks() {
     const mount = $("#selected-work");
     if (!mount) return;
-
-    // Desktop
-    const desktop = document.createElement("section");
-    desktop.className = "work-desktop";
-    desktop.innerHTML =
-      '<div class="work-sticky">' +
-        '<div class="work-heading"><h2 class="heading-2"><span class="dark">FEATURED </span><span class="red">WORKS</span></h2></div>' +
-        '<div class="work-stage" id="work-stage"></div>' +
-      "</div>";
-
-    const stage = $("#work-stage", desktop) || desktop.querySelector(".work-stage");
-    const cardEls = WORK_CARDS.map((card, i) => {
-      const a = document.createElement("a");
-      a.href = card.href || "#";
-      a.className = "work-card";
-      a.style.zIndex = WORK_CARDS.length - i;
-      a.innerHTML = cardInner(card);
-      stage.appendChild(a);
-      return a;
-    });
-
-    // Mobile
-    const mobile = document.createElement("section");
-    mobile.className = "work-mobile";
-    mobile.innerHTML =
-      '<h2><span style="color:#121212">FEATURED </span><span style="color:#E42222">WORKS</span></h2>' +
-      '<div class="work-mobile-list"></div>';
-    const mlist = mobile.querySelector(".work-mobile-list");
-    WORK_CARDS.forEach((card, i) => {
-      const a = document.createElement("a");
-      a.href = card.href || "#";
-      a.className = "work-mcard reveal";
-      a.style.transitionDelay = (i * 0.05) + "s";
-      a.innerHTML = cardInner(card);
-      mlist.appendChild(a);
-    });
-
-    mount.appendChild(desktop);
-    mount.appendChild(mobile);
-
-    function update() {
-      const scrollable = desktop.offsetHeight - window.innerHeight;
-      const p = scrollable <= 0 ? 0 : clamp(-desktop.getBoundingClientRect().top / scrollable, 0, 1);
-      let phase, t;
-      if (p < 0.40) { phase = 1; t = easeInOut(p / 0.40); }
-      else if (p < 0.78) { phase = 2; t = easeInOut((p - 0.40) / 0.38); }
-      else { phase = 3; t = 1; }
-      const isGrid = phase === 3 || (phase === 2 && t > 0.55);
-      cardEls.forEach((card, i) => {
-        const pos = phase === 1 ? lerpPos(STACK[i], FAN[i], t)
-                  : phase === 2 ? lerpPos(FAN[i], GRID[i], t)
-                  : GRID[i];
-        card.style.transform = "translate(-50%,-50%) translate(" + pos.x + "vw," + pos.y + "vh) rotate(" + pos.r + "deg)";
-        card.style.pointerEvents = isGrid ? "auto" : "none";
-      });
-    }
-    window.addEventListener("scroll", update, { passive: true });
-    window.addEventListener("resize", update);
-    update();
+    const visible = WORKS.filter((w) => !w.hidden);
+    mount.innerHTML =
+      '<section class="works"><div class="works-inner">' +
+        '<h2 class="heading-2 reveal"><span class="dark">FEATURED </span><span class="red">WORKS</span></h2>' +
+        '<div class="works-grid">' +
+          visible.map((w, i) =>
+            '<a class="wk-card reveal" href="' + w.href + '" style="transition-delay:' + (i % 2) * 0.08 + 's">' +
+              '<span class="wk-media">' +
+                '<img src="' + w.img + '" alt="' + w.name + '" loading="lazy" />' +
+              "</span>" +
+              '<h3 class="wk-name">' + w.name + "</h3>" +
+              '<p class="wk-tag">' + w.tag + "</p>" +
+            "</a>"
+          ).join("") +
+        "</div>" +
+      "</div></section>";
   }
 
-  /* ── Process ──────────────────────────────────────────────────────────── */
-  const ICONS = {
-    search: '<circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/>',
-    target: '<circle cx="12" cy="12" r="10"/><circle cx="12" cy="12" r="6"/><circle cx="12" cy="12" r="2"/>',
-    fileText: '<path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/><line x1="10" y1="9" x2="8" y2="9"/>',
-    heart: '<path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/>',
-    penTool: '<path d="m12 19 7-7 3 3-7 7-3-3z"/><path d="m18 13-1.5-7.5L2 2l3.5 14.5L13 18l5-5z"/><path d="m2 2 7.586 7.586"/><circle cx="11" cy="11" r="2"/>',
-    rocket: '<path d="M4.5 16.5c-1.5 1.26-2 5-2 5s3.74-.5 5-2c.71-.84.7-2.13-.09-2.91a2.18 2.18 0 0 0-2.91-.09z"/><path d="m12 15-3-3a22 22 0 0 1 2-3.95A12.88 12.88 0 0 1 22 2c0 2.72-.78 7.5-6 11a22.35 22.35 0 0 1-4 2z"/><path d="M9 12H4s.55-3.03 2-4c1.62-1.08 5 0 5 0"/><path d="M12 15v5s3.03-.55 4-2c1.08-1.62 0-5 0-5"/>',
-  };
+  /* ── Process ──────────────────────────────────────────────────────────
+     Six rings that fill with red as the brand takes shape.
+       fill  liquid level, 0-1
+       tilt  degrees the surface slants; +ve drops the right side
+       fx    figure's x in viewBox units, so it stands where the art puts it
+     Silhouettes are referenced, not inlined — 65KB of path data doesn't
+     belong in this file. ART_SCALE keeps their relative sizes as exported. */
+  const ART_SCALE = 0.565;
   const PROCESS = [
-    { num: "01", icon: "search", title: "Knowing the Business", desc: "A strong brand starts with a deep understanding of the business, the people it serves, and the market it operates in." },
-    { num: "02", icon: "target", title: "Finding Your Edge", desc: "Every existing successful brand stands for something specific, and this is step where that unique space is uncovered." },
-    { num: "03", icon: "fileText", title: "Defining Your Brand", desc: "A clear strategy brings together your purpose, positioning, voice, and values into one shared direction." },
-    { num: "04", icon: "heart", title: "Humanising the Brand", desc: "Brands become more relatable when they feel human. This is where personality, tone, and character begin to take shape." },
-    { num: "05", icon: "penTool", title: "Crafting the Identity", desc: "With a clear strategy in place, the visual identity becomes an expression of the brand—not just decoration." },
-    { num: "06", icon: "rocket", title: "Bringing It to Life", desc: "A brand only becomes real when it’s experienced. Every touchpoint should feel consistent, familiar, and unmistakably yours." },
+    { num: "01", fill: 0.12, tilt:  -5, fx: 42, art: ["Vector.svg",   19,  69], title: "Understanding <br>the Business", tag: "Business · Audience · Market" },
+    { num: "02", fill: 0.26, tilt:  -8, fx: 44, art: ["Vector-2.svg", 23,  80], title: "Finding <br>the Edge",           tag: "Positioning · Differentiation · Opportunity" },
+    { num: "03", fill: 0.46, tilt:  -8, fx: 46, art: ["Vector-3.svg", 34,  64], title: "Defining <br>the Brand",         tag: "Purpose · Values · Direction" },
+    { num: "04", fill: 0.60, tilt:  -6, fx: 50, art: ["Vector-4.svg", 29,  70], title: "Giving It <br>Personality",      tag: "Character · Personality · Voice" },
+    { num: "05", fill: 0.80, tilt: -14, fx: 60, art: ["Vector-5.svg", 51,  88], title: "Building <br>the Identity",      tag: "Logo · Colour · Typography" },
+    { num: "06", fill: 0.90, tilt:  -2, fx: 52, art: ["Vector-6.svg", 53, 112], title: "Bringing It <br>to Life",        tag: "Packaging · Digital · Social" },
   ];
+
+  /* A gently waved surface, tilted by each ring's `tilt` into a slope. Static
+     geometry — no drift. Deliberately far wider and deeper than the ring: the
+     tilt rotates this path, and a tight box would swing its corners into view. */
+  const SURFACE = "M-200 10q12.5-6 25 0" + "t25 0".repeat(23) + "V600H-200Z";
+
   function initProcess() {
     const mount = $("#process-steps");
     if (!mount) return;
-    mount.innerHTML = PROCESS.map((s) =>
-      '<div class="process-card">' +
-        '<div class="process-tick"></div>' +
-        '<div class="process-row">' +
-          '<div class="process-numicon">' +
-            '<div class="process-icon"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">' + ICONS[s.icon] + "</svg></div>" +
-          "</div>" +
-          "<div><h4>" + s.title + "</h4><p>" + s.desc + "</p></div>" +
-        "</div>" +
-      "</div>"
-    ).join("");
+    mount.innerHTML = PROCESS.map((s, i) => {
+      const surface = 100 - s.fill * 100;          // liquid line, in viewBox units
+      const rise = surface - 10;
+      const [file, aw, ah] = s.art;
+      const w = aw * ART_SCALE, h = ah * ART_SCALE;
+      // Stand the figure on the slanted surface, a hair into the liquid.
+      const feet = surface + (s.fx - 50) * Math.tan((s.tilt * Math.PI) / 180) + 1;
+      return (
+        '<div class="pr-step" style="--rise:' + rise.toFixed(1) + 'px">' +
+          '<svg class="pr-ring" viewBox="0 0 100 100" aria-hidden="true">' +
+            '<defs><clipPath id="prc' + i + '"><circle cx="50" cy="50" r="48"/></clipPath></defs>' +
+            '<g clip-path="url(#prc' + i + ')"><g class="pr-rise">' +
+              '<g transform="rotate(' + s.tilt + ' 50 10) translate(' + i * 11 + ' 0)">' +
+                '<path d="' + SURFACE + '"/>' +
+              "</g>" +
+            "</g></g>" +
+            '<circle class="pr-out" cx="50" cy="50" r="48"/>' +
+            '<g class="pr-rise"><image href="brand/process/' + file + '"' +
+              ' x="' + (s.fx - w / 2).toFixed(2) + '" y="' + (feet - h - rise).toFixed(2) + '"' +
+              ' width="' + w.toFixed(2) + '" height="' + h.toFixed(2) + '"/></g>' +
+          "</svg>" +
+          '<div class="pr-stem"></div><div class="pr-linerow"><span class="pr-dot"></span></div>' +
+          '<div class="pr-num">' + s.num + "</div>" +
+          '<h4 class="pr-title">' + s.title + "</h4>" +
+          '<div class="pr-rule"></div>' +
+          '<p class="pr-tag">' + s.tag + "</p>" +
+        "</div>"
+      );
+    }).join("");
+
+    // Fill on scroll-in, staggered left to right.
+    new IntersectionObserver((entries, obs) => {
+      entries.forEach((e) => {
+        if (!e.isIntersecting) return;
+        mount.querySelectorAll(".pr-step").forEach((el, i) => {
+          el.querySelectorAll(".pr-rise").forEach((r) => {
+            r.style.transitionDelay = i * 0.12 + "s";
+          });
+        });
+        mount.classList.add("play");
+        obs.disconnect();
+      });
+    }, { rootMargin: "-80px" }).observe(mount);
   }
 
   /* ── Services ─────────────────────────────────────────────────────────── */
@@ -616,7 +600,7 @@
 
   /* ── Reviews ──────────────────────────────────────────────────────────── */
   const REVIEWS = [
-    { name: "Chiranjeev Sandhu", role: "Cleaon Care", quote: "Chapter Red Designs\u2019 attention to detail and immersion in our project are impressive." },
+    { name: "Chiranjeev Sandhu", role: "Cleaon Care", quote: "Chapter Red helped us build our complete brand identity, from the logo and brand language to packaging, website, content, and SEO. They immersed themselves deeply in the project and paid great attention to detail. The new branding has elevated our packaging and overall presentation, and we\u2019ve received positive feedback from our partners and marketers. The team was timely, collaborative, detail-oriented, and understood our vision really well." },
     { name: "Mohita Mathur", role: "Founder — Mo\u2019s Bakery", quote: "I have worked with Jasgul for over 2 years now and she is a very versatile and dynamic designer. She has not only designed our product packaging but has also helped us shape our brands personality by constantly working with us in refining it. She has a humble personality and is able to understand the requirements of the marketing team and brand owner well." },
     { name: "Sonal Bangia", role: "Co-Founder — The Brand Palette", quote: "Jasgul is one of the most talented thinkers and creative designers that I have met. Her sense of design is exceptional and she is extremely responsible about her work. She has grown exponentially in the last few years and I am looking forward to staying associated with her in the future." },
     { name: "Anamika Mahajan", role: "GoPhrasing & Zenith SFI", quote: "What stood out most about this agency was their ability to deeply understand my vision \u2014 even when I struggled to articulate it clearly. They asked the right questions, listened attentively, and took time to truly understand my brand\u2019s mission and personality. What impressed me was not just their technical skill, but their ability to translate abstract ideas into visual language that felt authentic, modern, and aligned with my goals." },
@@ -807,7 +791,7 @@
     initMobileNav();
     initDustField();
     initShowreel();
-    initSelectedWork();
+    initWorks();
     initProcess();
     initServices();
     initReviews();

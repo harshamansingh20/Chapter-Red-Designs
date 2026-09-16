@@ -177,7 +177,8 @@ ul { list-style: none; }
   transition: background 0.2s;
 }
 .btn-call:hover { background: #c91c1c; }
-@media (min-width: 768px) {
+/* Full nav + CTA only once there's room for them; hamburger covers below. */
+@media (min-width: 1000px) {
   .navbar-nav { display: flex; }
   .btn-call { display: inline-flex; }
 }
@@ -385,58 +386,51 @@ ul { list-style: none; }
   margin: 0 auto;
   border-top: 1px dashed rgba(0, 0, 0, 0.1);
 }
-.process-grid {
-  display: flex;
-  flex-direction: column;
-  gap: 4rem;
-}
-.process-left h2 { margin: 1rem 0 1.5rem; }
-.process-left p { font-size: 1.0625rem; color: #4F4F4F; line-height: 1.625; margin-bottom: 1.5rem; max-width: 27.5rem; }
-.process-steps { display: flex; flex-direction: column; gap: 0.75rem; }
-.process-card {
+.process-head { margin: 0 0 4.5rem; }
+.process-head h2 { margin: 1rem 0 1.5rem; white-space: nowrap; }
+.process-head p { font-size: 1.0625rem; color: #4F4F4F; line-height: 1.625; max-width: 46rem; }
+
+/* ── Process rings ────────────────────────────────────────────────────────
+   Six rings filling with red as the brand takes shape. The wave loops
+   forever; the fill level rises once, when the row scrolls into view. */
+.pr-track {
   position: relative;
-  border-radius: 1rem;
-  padding: 1.25rem 1.5rem;
-  border: 1px solid rgba(0, 0, 0, 0.1);
-  cursor: pointer;
-  overflow: hidden;
-  background: #fff;
-  transition: background 0.3s, transform 0.25s cubic-bezier(0.16,1,0.3,1), box-shadow 0.25s;
+  display: grid;
+  grid-template-columns: repeat(6, 1fr);
+  align-items: start;
 }
-.process-card:hover {
-  background: #121212;
-  transform: translateY(-0.1875rem);
-  box-shadow: 0 12px 28px rgba(0, 0, 0, 0.08);
+.pr-step { display: flex; flex-direction: column; align-items: center; text-align: center; }
+.pr-ring { width: 72%; max-width: 11.5rem; height: auto; overflow: visible; }
+.pr-ring .pr-out { fill: none; stroke: var(--red); stroke-width: 1.2; }
+.pr-ring path { fill: var(--red); }
+
+/* Two elements ride the same rise: the clipped liquid and the figure on it.
+   Kept separate from the horizontal loop so the transforms don't fight. */
+.pr-rise { transform: translateY(110px); transition: transform 1.4s cubic-bezier(0.22, 1, 0.36, 1); }
+.pr-track.play .pr-rise { transform: translateY(var(--rise)); }
+
+/* Stem down from each ring to its dot on the timeline. */
+.pr-stem { width: 1px; height: 3.25rem; background: rgba(0,0,0,0.35); }
+/* The rule is a per-column segment rather than one bar across the track, so
+   it self-aligns to the dots however tall the rings render. The outer halves
+   of 01 and 06 are cut, so the line starts and ends on a dot. */
+.pr-linerow { position: relative; width: 100%; height: 1px; margin-bottom: 2.25rem; background: rgba(0,0,0,0.35); }
+.pr-step:first-child .pr-linerow { background: linear-gradient(to right, transparent 50%, rgba(0,0,0,0.35) 50%); }
+.pr-step:last-child  .pr-linerow { background: linear-gradient(to right, rgba(0,0,0,0.35) 50%, transparent 50%); }
+.pr-dot {
+  position: absolute; left: 50%; top: 50%; transform: translate(-50%, -50%);
+  width: 0.6875rem; height: 0.6875rem; border-radius: 50%; background: #121212;
 }
-.process-tick {
-  position: absolute;
-  left: 0; top: 50%;
-  transform: translateY(-50%);
-  width: 2px; height: 2rem;
-  background: var(--accent-orange);
-  border-radius: 9999px;
+.pr-num { font-size: 1.375rem; color: var(--red); font-weight: 500; margin-bottom: 0.5rem; }
+.pr-title {
+  font-size: 1.0625rem; font-weight: 800; letter-spacing: -0.02em;
+  line-height: 1.25; color: #121212; margin: 0 0 0.875rem; max-width: 9.5rem;
 }
-.process-row { display: flex; align-items: flex-start; gap: 1rem; }
-.process-numicon { flex-shrink: 0; display: flex; flex-direction: column; align-items: center; gap: 0.25rem; }
-.process-num { font-size: 0.6875rem; font-weight: 500; letter-spacing: 0.1em; color: #A1A1A1; transition: color 0.3s; }
-.process-card:hover .process-num { color: rgba(255,255,255,0.5); }
-.process-icon {
-  width: 2.25rem; height: 2.25rem;
-  border-radius: 0.75rem;
-  display: flex; align-items: center; justify-content: center;
-  background: #F0F0F0;
-  color: #4F4F4F;
-  transition: background 0.3s, color 0.3s;
-}
-.process-card:hover .process-icon { background: rgba(255,255,255,0.1); color: #fff; }
-.process-card h4 { font-weight: 700; font-size: 1.0625rem; margin-bottom: 0.25rem; letter-spacing: -0.01em; color: #121212; transition: color 0.3s; }
-.process-card:hover h4 { color: #fff; }
-.process-card p { font-size: 0.875rem; line-height: 1.625; color: #4F4F4F; transition: color 0.3s; }
-.process-card:hover p { color: rgba(255,255,255,0.6); }
-@media (min-width: 1024px) {
-  .process-grid { flex-direction: row; align-items: flex-start; gap: 4rem; }
-  .process-left { width: 50%; position: sticky; top: 7rem; }
-  .process-steps { width: 50%; }
+.pr-rule { width: 2.5rem; height: 1px; background: rgba(0,0,0,0.25); margin-bottom: 0.875rem; }
+.pr-tag { font-size: 0.75rem; line-height: 1.5; color: #4F4F4F; max-width: 10.5rem; }
+
+@media (prefers-reduced-motion: reduce) {
+  .pr-rise { transition: none; transform: translateY(var(--rise)); }
 }
 
 /* ==========================================================================
@@ -595,7 +589,7 @@ ul { list-style: none; }
   font-size: 0.875rem; line-height: 1.65; color: #4F4F4F;
   /* Clamped so one long testimonial can't set the height of the whole row.
      Full text stays in the DOM for search engines and screen readers. */
-  display: -webkit-box; -webkit-box-orient: vertical; -webkit-line-clamp: 9;
+  display: -webkit-box; -webkit-box-orient: vertical; -webkit-line-clamp: 11;
   overflow: hidden;
 }
 
@@ -850,84 +844,62 @@ textarea.field { resize: none; line-height: 1.625; }
 .footer-copyright { font-size: 0.6875rem; font-weight: 500; letter-spacing: 0.06em; text-transform: uppercase; color: #9B9B9B; }
 
 /* ==========================================================================
-   SELECTED WORK (desktop scroll animation + mobile stack)
+   FEATURED WORKS (static two-column grid)
    ========================================================================== */
-.work-desktop {
-  height: 440vh;
-  position: relative;
+.works {
+  background: var(--bg-page);
   border-bottom: 1px solid rgba(0, 0, 0, 0.08);
 }
-.work-sticky {
-  position: sticky; top: 0;
-  height: 100vh; width: 100%;
-  display: flex; flex-direction: column; align-items: center; justify-content: center;
-  overflow: clip;
-  background: #F0F0F0;
+.works-inner {
+  max-width: 94.5rem;
+  margin: 0 auto;
+  padding: 6rem 3.5rem;
 }
-.work-heading {
-  position: absolute; top: clamp(5.5rem, 10vh, 8.125rem); left: 0; right: 0;
-  max-width: 94.5rem; margin: 0 auto; padding: 0 3.5rem;
-  z-index: 5; pointer-events: none;
+.works-inner > .heading-2 { margin: 0 0 3.5rem; }
+.works-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 3.75rem 3.625rem;
 }
-.work-heading h2 { line-height: 1.1; }
-.work-stage {
-  position: relative; width: 100%; height: 100%;
-  display: flex; align-items: center; justify-content: center;
+.wk-card { display: block; color: inherit; text-decoration: none; }
+.wk-media {
+  display: block;
+  aspect-ratio: 16 / 10;
+  overflow: hidden;
+  border-radius: 1.25rem;
+  background: #DCDCDC;
+  margin-bottom: 1.375rem;
 }
-.work-card {
-  position: absolute; top: 50%; left: 50%;
-  width: clamp(18.125rem, 28vw, 26.25rem);
-  height: clamp(12.5rem, 19vw, 17.5rem);
-  border-radius: 0.875rem; overflow: hidden;
-  border: 1px solid rgba(17, 17, 16, 0.10);
-  background: #ECEAE5;
-  transform: translate(-50%, -50%);
+.wk-media img {
+  width: 100%; height: 100%;
+  object-fit: cover; display: block;
+  transition: scale 0.5s cubic-bezier(0.16, 1, 0.3, 1);
+}
+.wk-card:hover .wk-media img { scale: 1.04; }
+.wk-name {
+  font-size: clamp(17px, 1.5vw, 20px);
+  font-weight: 800;
+  text-transform: uppercase;
+  letter-spacing: -0.01em;
+  line-height: 1.2;
   color: #121212;
-  pointer-events: none;
-  transition: scale 0.3s cubic-bezier(0.16,1,0.3,1);
+  margin: 0 0 0.5rem;
+  transition: color 0.3s;
 }
-.work-card:hover { scale: 1.04; }
-.work-card .overlay { display: none; }
-
-.work-mobile { background: #F0F0F0; border-bottom: 1px solid rgba(0,0,0,0.08); padding: 3.5rem 1.5rem 4.5rem; display: none; }
-.work-mobile h2 {
-  font-size: clamp(36px, 4.5vw, 58px); font-weight: 800; line-height: 1.08;
-  letter-spacing: -0.125rem; margin: 0 0 2.25rem;
-}
-.work-mobile-list { display: flex; flex-direction: column; gap: 0.75rem; }
-.work-mcard {
-  display: flex; flex-direction: column;
-  border-radius: 0.875rem; overflow: hidden;
-  height: 12.5rem;
-  border: 1px solid rgba(17, 17, 16, 0.10);
-  background: #ECEAE5;
-  color: #121212; position: relative;
-  transition: scale 0.3s cubic-bezier(0.16,1,0.3,1);
-}
-.work-mcard:hover { scale: 1.02; }
-.work-mcard .overlay { display: none; }
-
-@media (max-width: 1199px) {
-  .work-desktop { display: none; }
-  .work-mobile { display: block; }
-}
-
-/* Tablet: 2-column card grid */
-@media (min-width: 768px) and (max-width: 1199px) {
-  .work-mobile { padding-left: 2.5rem; padding-right: 2.5rem; }
-  .work-mobile-list { display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; }
-  .work-mcard { height: auto; aspect-ratio: 4 / 3; }
-}
-
-/* Small mobile: tighten heading */
-@media (max-width: 480px) {
-  .work-mobile h2 { font-size: clamp(28px, 8vw, 36px); letter-spacing: -0.0625rem; }
+.wk-card:hover .wk-name { color: var(--red); }
+.wk-tag {
+  font-size: 0.9375rem;
+  line-height: 1.6;
+  color: var(--text-secondary);
+  margin: 0;
+  max-width: 30rem;
 }
 
 /* ==========================================================================
    SERVICES (sticky stacking cards)
    ========================================================================== */
 .services { border-top: 1px dashed rgba(0, 0, 0, 0.1); padding-top: 6rem; }
+.services-spacer { height: 6rem; }
 .services-container {
   position: relative;
   max-width: 94.5rem;
@@ -1092,7 +1064,7 @@ textarea.field { resize: none; line-height: 1.625; }
 
 /* ── Hamburger button ──────────────────────────────────────────────────────── */
 .hamburger {
-  display: none;
+  display: flex;
   flex-direction: column;
   justify-content: center;
   gap: 5px;
@@ -1189,7 +1161,7 @@ textarea.field { resize: none; line-height: 1.625; }
 }
 .mobile-nav-footer .btn-call-lg { width: 100%; justify-content: center; }
 
-@media (min-width: 768px) {
+@media (min-width: 1000px) {
   .hamburger { display: none !important; }
   .mobile-nav { display: none !important; }
 }
@@ -1235,7 +1207,62 @@ textarea.field { resize: none; line-height: 1.625; }
     padding-left: 1.5rem;
     padding-right: 1.5rem;
   }
-  .contact-inner { padding-left: 1.5rem; padding-right: 1.5rem; }
+  /* Featured works — one column; two 16:10 cards side by side at 375px would
+     be thumbnails, and the taglines would wrap to five lines each. */
+  .works-inner { padding: 3.5rem 1.5rem 4.5rem; }
+  .works-inner > .heading-2 { margin-bottom: 2.25rem; }
+  .works-grid { grid-template-columns: 1fr; gap: 2.5rem; }
+  .wk-tag { max-width: none; }
+  /* These sections carry a flat 6rem top+bottom on every viewport; stacked
+     across a border with the section either side, that's ~192px of dead
+     space on a 375px screen. Halve it down here. */
+  .process, .reviews, .team, .faq {
+    padding-top: 3.5rem;
+    padding-bottom: 3.5rem;
+  }
+  .services { padding-top: 3.5rem; }
+  .services-spacer { height: 2.5rem; }
+  /* Process — six rings can't survive 375px across, so the timeline turns
+     vertical: ring in the gutter, text beside it, thread running between. */
+  .process-head { margin-bottom: 3rem; }
+  /* One line is a desktop-only luxury; at 375px it runs 129px past the edge. */
+  .process-head h2 { white-space: normal; }
+  .pr-track { grid-template-columns: 1fr; }
+  .pr-step {
+    position: relative;
+    display: grid;
+    grid-template-columns: 4.25rem 1fr;
+    column-gap: 1.125rem;
+    align-items: start;
+    text-align: left;
+    padding-bottom: 2.5rem;
+  }
+  /* Thread starts at the step's midpoint and runs to its base; the ring's own
+     page-coloured background masks the stretch that crosses it. That keeps the
+     join exact however tall the text beside it happens to be. */
+  .pr-step:not(:last-child)::before {
+    content: ""; position: absolute; left: 2.125rem; top: 50%; bottom: 0;
+    border-left: 1px solid rgba(0, 0, 0, 0.35);
+  }
+  .pr-ring {
+    grid-column: 1; grid-row: 1 / span 4; width: 100%; max-width: 4.25rem;
+    align-self: center; background: var(--bg-page);
+    /* Positioned so it paints in the same phase as the absolute ::before
+       thread and, being later in tree order, masks it. */
+    position: relative;
+  }
+  .pr-stem, .pr-linerow { display: none; }
+  .pr-num { grid-column: 2; margin-bottom: 0.125rem; }
+  /* Titles run on one line here — the hard break is a desktop-column device,
+     and the gutter is narrow enough that two lines read as a stack of stubs. */
+  .pr-title {
+    grid-column: 2; max-width: none; margin-bottom: 0.625rem;
+    font-size: clamp(13px, 4.2vw, 17px); white-space: nowrap;
+  }
+  .pr-title br { display: none; }
+  .pr-rule { grid-column: 2; margin-bottom: 0.625rem; }
+  .pr-tag { grid-column: 2; max-width: none; }
+  .contact-inner { padding-left: 1.5rem; padding-right: 1.5rem; padding-top: 3.5rem; padding-bottom: 3.5rem; }
   /* Services — mobile: stack, every card fully open, no hover swapping */
   .services-header-inner { flex-direction: column; padding: 2.5rem 1.5rem 1.5rem; }
   .services-header p { text-align: left; margin-top: 0.75rem; max-width: 100%; }
@@ -1263,11 +1290,17 @@ textarea.field { resize: none; line-height: 1.625; }
   .footer-right-group { align-items: center; }
 }
 @media (min-width: 768px) and (max-width: 1023px) {
+  .works-inner { padding-left: 2.5rem; padding-right: 2.5rem; }
+  .works-grid { gap: 2.5rem 2rem; }
   .brands-inner, .process, .reviews, .team, .faq {
     padding-left: 2.5rem;
     padding-right: 2.5rem;
+    padding-top: 4.5rem;
+    padding-bottom: 4.5rem;
   }
-  .contact-inner { padding-left: 2.5rem; padding-right: 2.5rem; }
+  .services { padding-top: 4.5rem; }
+  .services-spacer { height: 3.5rem; }
+  .contact-inner { padding-left: 2.5rem; padding-right: 2.5rem; padding-top: 4.5rem; padding-bottom: 4.5rem; }
   .services-container { padding-left: 2.5rem; padding-right: 2.5rem; }
   .services-header-inner { padding-left: 2.5rem; padding-right: 2.5rem; }
   .footer-quote-wrap { padding-left: 2.5rem; padding-right: 2.5rem; }
@@ -1359,4 +1392,44 @@ textarea.field { resize: none; line-height: 1.625; }
   letter-spacing: -0.03em;
   color: #121212;
   margin: 0;
+}
+
+/* ── Blog post hero ──────────────────────────────────────────────────────
+   Full-height on desktop so the decorative panel + headline overlay have
+   room to breathe. At 100vh that's the whole first screen on a phone with
+   nothing but the headline pinned to the bottom — cap it much shorter. */
+.blog-hero {
+  padding-top: 4.5rem;
+  height: calc(100vh - 4.5rem);
+  position: relative;
+  overflow: hidden;
+  display: grid;
+  grid-template-columns: 44% 56%;
+}
+@media (max-width: 767px) {
+  .blog-hero { height: 24rem; }
+}
+
+/* Blog post body — sidebar (meta + CTA) beside the article. The sidebar
+   column never gave way below its clamp() floor, so on a phone it and the
+   article fought for space and both got clipped at the edge — stack them. */
+.blog-body {
+  max-width: 80rem;
+  margin: 0 auto;
+  padding: 4rem clamp(1.5rem, 5vw, 3.75rem) 6rem;
+  display: grid;
+  grid-template-columns: clamp(12.5rem, 22%, 17.5rem) 1fr;
+  gap: clamp(2rem, 5vw, 5rem);
+}
+.blog-aside {
+  position: sticky;
+  top: 5rem;
+  align-self: start;
+  display: flex;
+  flex-direction: column;
+  gap: 2rem;
+}
+@media (max-width: 767px) {
+  .blog-body { grid-template-columns: 1fr; padding-top: 2.5rem; padding-bottom: 3.5rem; }
+  .blog-aside { position: static; }
 }
